@@ -1,7 +1,7 @@
 CC	=	gcc
 SUFFIX  ?= so
 CFLAGS  += -c -I ${JAVA_HOME}/include -I /opt/intel/mkl/include -std=c99 -fPIC -fopenmp
-LDFLAGS += -L /opt/intel/mkl/lib -Wall -ldl -shared -lmklml_intel -liomp5 -lm -ldl
+LDFLAGS += -L /opt/intel/compilers_and_libraries/linux/lib/intel64  -Wall -ldl -shared  -liomp5 -lm -ldl
 
 SOURCES_DIR = ../../src/main/c
 OBJECTS_DIR = ../target/obj
