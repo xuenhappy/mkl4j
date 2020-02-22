@@ -1,6 +1,4 @@
 # vim:noet
-include ../Makefile.head
-
 CC = cl.exe
 LD = link.exe
 
@@ -17,8 +15,7 @@ SOURCES = $(SOURCES_DIR)\mkl.c
 OBJECTS = $(patsubst $(SOURCES_DIR)\\%.c, $(OBJECTS_DIR)\\%.o, $(SOURCES))
 
 all:
-ifeq ($(PLATFORM), WINDOWS)
 	@if not exist $(OBJECTS_DIR) md $(OBJECTS_DIR)
 	$(CC) $(CFLAGS) -IC:$(SOURCES_DIR) /FoC:$(strip $(OBJECTS)) -c $(SOURCES)
 	$(LD) $(LDFLAGS) /out:$(EXECUTABLE) $(OBJECTS)
-endif
+

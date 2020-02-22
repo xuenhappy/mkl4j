@@ -41,7 +41,7 @@ public class MKL {
 	static {
 		try {
 			String iomp5FileName = "libiomp5.so";
-			String mklFileName = "libmklml_intel.so";
+			String mklFileName = "libmkl_rt.so";
 			String jmklFileName = "libjmkl.so";
 			if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 				iomp5FileName = "libiomp5.dylib";

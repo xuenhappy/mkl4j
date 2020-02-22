@@ -1,13 +1,28 @@
 # vim:noet
-include ../Makefile.head
-
 SUFFIX = dylib
 
-ifeq ($(PLATFORM), MACOS)
-	override CC = icc
-	override CFLAGS = -I ${JAVA_HOME}/include/darwin -c -I ${JAVA_HOME}/include -I  /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include -std=c99 \
-	                  -fPIC -fstack-protector-all
-	override LDFLAGS = -Wall -ldl -liomp5 -shared -mkl=parallel -qopenmp \
-	                   -static-intel -no-intel-extensions
-	include ../Makefile.tail
-endif
+CC = icc
+CFLAGS = -I ${JAVA_HOME}/include/darwin -c -I ${JAVA_HOME}/include -I  /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include -std=c99 \
+                  -fPIC -fstack-protector-all
+LDFLAGS = -Wall -ldl -liomp5 -shared -mkl=parallel -qopenmp \
+                   -static-intel -no-intel-extensions
+
+SOURCES_DIR = ../../src/main/c
+OBJECTS_DIR = ../target/obj
+EXECUTABLE  = ../target/libjmkl.$(SUFFIX)
+
+SOURCES=$(SOURCES_DIR)/mkl4j.c
+OBJECTS=$(patsubst $(SOURCES_DIR)/%.c, $(OBJECTS_DIR)/%.o, $(SOURCES))
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+		$(CC) $(LDFLAGS) $(OBJECTS) -lm -o $@
+
+
+$(OBJECTS): $(SOURCES)
+		mkdir -p $(OBJECTS_DIR)
+		$(CC) -I$(SOURCES_DIR)  $(CFLAGS)  $< -o $@
+
+clean:
+		rm -rf $(OBJECTS_DIR) $(EXECUTABLE)
