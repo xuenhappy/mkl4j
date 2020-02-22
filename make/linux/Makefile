@@ -1,6 +1,6 @@
 # vim:noet
 #export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-#source  compilervars.sh -arch intel64 -platform linux
+#source /opt/intel/compilers_and_libraries_2020/linux/bin/compilervars.sh intel64
 CC	=	icc
 SUFFIX  = so
 CFLAGS  = -c ${JAVA_HOME}/include/linux -I ${JAVA_HOME}/include -I/opt/intel/mkl/include -std=c99 \
