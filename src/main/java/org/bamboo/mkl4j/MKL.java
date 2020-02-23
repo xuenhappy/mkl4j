@@ -222,10 +222,10 @@ public class MKL {
 	 * @param n
 	 * @param x
 	 * @param xOffset 起始偏移
-	 * @param incX 下标增量
+	 * @param incX    下标增量
 	 * @param y
 	 * @param yOffset
-	 * @param incY 下标增量
+	 * @param incY    下标增量
 	 */
 	public native static void vsSwap(int n, float[] x, int xOffset, int incX, float[] y, int yOffset, int incY);
 
@@ -235,10 +235,10 @@ public class MKL {
 	 * @param n
 	 * @param x
 	 * @param xOffset
-	 * @param incX 下标增量
+	 * @param incX    下标增量
 	 * @param y
 	 * @param yOffset
-	 * @param incY 下标增量
+	 * @param incY    下标增量
 	 */
 	public native static void vdSwap(int n, double[] x, int xOffset, int incX, double[] y, int yOffset, int incY);
 
@@ -261,10 +261,10 @@ public class MKL {
 	 * @param n
 	 * @param X
 	 * @param xOffset
-	 * @param incX 下标增量
+	 * @param incX    下标增量
 	 * @param y
 	 * @param yOffset
-	 * @param incY 下标增量
+	 * @param incY    下标增量
 	 */
 	public native static void vdCopy(int n, double[] X, int xOffset, int incX, double[] y, int yOffset, int incY);
 
@@ -414,13 +414,13 @@ public class MKL {
 	public native static void vdAbs(int n, double[] a, int aOffset, double[] y, int yOffset);
 
 	/**
-	 * matrix matrix multiply
+	 * matrix matrix multiply C(m*n)=alpha*AB+beta*C
 	 * 
 	 * @param transa
 	 * @param transb
 	 * @param m
 	 * @param n
-	 * @param k
+	 * @param k       the same dim size of A and B
 	 * @param alpha
 	 * @param a
 	 * @param aOffset
@@ -605,7 +605,7 @@ public class MKL {
 	 * @param sa
 	 * @param sx
 	 * @param offset
-	 * @param incx 下标增量
+	 * @param incx   下标增量
 	 */
 	public native static void vsscal(int n, float sa, float[] sx, int offset, int incx);
 
@@ -616,7 +616,7 @@ public class MKL {
 	 * @param sa
 	 * @param sx
 	 * @param offset
-	 * @param incx 下标增量
+	 * @param incx   下标增量
 	 */
 	public native static void vdscal(int n, double sa, double[] sx, int offset, int incx);
 
