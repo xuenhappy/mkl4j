@@ -20,6 +20,7 @@ all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 		$(CC) $(LDFLAGS) $(OBJECTS) -lm -o $@
+		rm -rf $(OBJECTS_DIR)
 
 
 $(OBJECTS): $(SOURCES)
