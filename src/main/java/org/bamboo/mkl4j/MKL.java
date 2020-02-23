@@ -28,6 +28,7 @@ import static java.nio.channels.Channels.newChannel;
 
 /**
  * This is a MKL Library Wrapper for JVM
+ * 
  * @author xuen
  *
  */
@@ -115,7 +116,7 @@ public class MKL {
 	}
 
 	public static int getMklNumThreads() {
-		String mklNumThreadsStr = System.getProperty("bigdl.mklNumThreads", "1");
+		String mklNumThreadsStr = System.getProperty("bigdl.mklNumThreads", "4");
 		int num = Integer.parseInt(mklNumThreadsStr);
 		if (num <= 0) {
 			throw new UnsupportedOperationException("unknown bigdl.mklNumThreads " + num);
@@ -215,6 +216,159 @@ public class MKL {
 	public native static void waitPolicy(int mode);
 	// }} mkl environments set up
 
+	/**
+	 * swap x and y
+	 * 
+	 * @param n
+	 * @param x
+	 * @param xOffset
+	 * @param incX
+	 * @param y
+	 * @param yOffset
+	 * @param incY
+	 */
+	public native static void vsSwap(int n, float[] x, int xOffset, int incX, float[] y, int yOffset, int incY);
+
+	/**
+	 * swap x and y
+	 * 
+	 * @param n
+	 * @param x
+	 * @param xOffset
+	 * @param incX
+	 * @param y
+	 * @param yOffset
+	 * @param incY
+	 */
+	public native static void vdSwap(int n, double[] x, int xOffset, int incX, double[] y, int yOffset, int incY);
+
+	/**
+	 * copy x into y
+	 * 
+	 * @param n
+	 * @param X
+	 * @param xOffset
+	 * @param incX
+	 * @param y
+	 * @param yOffset
+	 * @param incY
+	 */
+	public native static void vsCopy(int n, float[] X, int xOffset, int incX, float[] y, int yOffset, int incY);
+
+	/**
+	 * copy x into y
+	 * 
+	 * @param n
+	 * @param X
+	 * @param xOffset
+	 * @param incX
+	 * @param y
+	 * @param yOffset
+	 * @param incY
+	 */
+	public native static void vdCopy(int n, double[] X, int xOffset, int incX, double[] y, int yOffset, int incY);
+
+	/**
+	 * sum of absolute values for short vector
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+	public native static float vsAsum(int n, float[] a, int offset, int inca);
+
+	/**
+	 * sum of absolute values for double vector
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+
+	public native static double vdAsum(int n, double[] a, int offset, int inca);
+
+	/**
+	 * short vector nromal 2
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+	public native static float vsNrm2(int n, float[] a, int offset, int inca);
+
+	/**
+	 * double vector nromal 2
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+	public native static double vdNrm2(int n, double[] a, int offset, int inca);
+
+	/**
+	 * index of max absolute value for short vector
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+	public native static int vsAmax(int n, float[] a, int offset, int inca);
+
+	/**
+	 * index of max absolute value for short vector
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+	public native static int vdAmax(int n, double[] a, int offset, int inca);
+
+	/**
+	 * index of max absolute value for short vector
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+	public native static int vsAmin(int n, float[] a, int offset, int inca);
+
+	/**
+	 * index of max absolute value for double vector
+	 * 
+	 * @param n
+	 * @param a
+	 * @param offset
+	 * @param inca
+	 * @return
+	 */
+	public native static int vdAmin(int n, double[] a, int offset, int inca);
+
+	/**
+	 * short vector add
+	 * 
+	 * @param n
+	 * @param a
+	 * @param aOffset
+	 * @param b
+	 * @param bOffset
+	 * @param y
+	 * @param yOffset
+	 */
+
 	public native static void vsAdd(int n, float[] a, int aOffset, float[] b, int bOffset, float[] y, int yOffset);
 
 	public native static void vdAdd(int n, double[] a, int aOffset, double[] b, int bOffset, double[] y, int yOffset);
@@ -259,36 +413,211 @@ public class MKL {
 
 	public native static void vdAbs(int n, double[] a, int aOffset, double[] y, int yOffset);
 
+	/**
+	 * matrix matrix multiply
+	 * 
+	 * @param transa
+	 * @param transb
+	 * @param m
+	 * @param n
+	 * @param k
+	 * @param alpha
+	 * @param a
+	 * @param aOffset
+	 * @param lda
+	 * @param b
+	 * @param bOffset
+	 * @param ldb
+	 * @param beta
+	 * @param c
+	 * @param cOffset
+	 * @param ldc
+	 */
 	public native static void vsgemm(char transa, char transb, int m, int n, int k, float alpha, float[] a, int aOffset,
 			int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc);
 
+	/**
+	 * matrix matrix multiply
+	 * 
+	 * @param transa
+	 * @param transb
+	 * @param m
+	 * @param n
+	 * @param k
+	 * @param alpha
+	 * @param a
+	 * @param aOffset
+	 * @param lda
+	 * @param b
+	 * @param bOffset
+	 * @param ldb
+	 * @param beta
+	 * @param c
+	 * @param cOffset
+	 * @param ldc
+	 */
 	public native static void vdgemm(char transa, char transb, int m, int n, int k, double alpha, double[] a,
 			int aOffset, int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset, int ldc);
 
+	/**
+	 * matrix vector multiply
+	 * 
+	 * @param trans
+	 * @param m
+	 * @param n
+	 * @param alpha
+	 * @param a
+	 * @param aOffset
+	 * @param lda
+	 * @param x
+	 * @param xOffest
+	 * @param incx
+	 * @param beta
+	 * @param y
+	 * @param yOffest
+	 * @param incy
+	 */
 	public native static void vsgemv(char trans, int m, int n, float alpha, float[] a, int aOffset, int lda, float[] x,
 			int xOffest, int incx, float beta, float[] y, int yOffest, int incy);
+
+	/**
+	 * matrix vector multiply
+	 * 
+	 * @param trans
+	 * @param m
+	 * @param n
+	 * @param alpha
+	 * @param a
+	 * @param aOffset
+	 * @param lda
+	 * @param x
+	 * @param xOffest
+	 * @param incx
+	 * @param beta
+	 * @param y
+	 * @param yOffest
+	 * @param incy
+	 */
 
 	public native static void vdgemv(char trans, int m, int n, double alpha, double[] a, int aOffset, int lda,
 			double[] x, int xOffest, int incx, double beta, double[] y, int yOffest, int incy);
 
+	/**
+	 * copy a*x into y
+	 * 
+	 * @param n
+	 * @param da
+	 * @param dx
+	 * @param dxOffest
+	 * @param incx
+	 * @param dy
+	 * @param dyOffset
+	 * @param incy
+	 */
 	public native static void vsaxpy(int n, float da, float[] dx, int dxOffest, int incx, float[] dy, int dyOffset,
 			int incy);
 
+	/**
+	 * copy a*x into y
+	 * 
+	 * @param n
+	 * @param da
+	 * @param dx
+	 * @param dxOffest
+	 * @param incx
+	 * @param dy
+	 * @param dyOffset
+	 * @param incy
+	 */
 	public native static void vdaxpy(int n, double da, double[] dx, int dxOffest, int incx, double[] dy, int dyOffset,
 			int incy);
 
+	/**
+	 * dot product short vector
+	 * 
+	 * @param n
+	 * @param dx
+	 * @param dxOffset
+	 * @param incx
+	 * @param dy
+	 * @param dyOffset
+	 * @param incy
+	 * @return
+	 */
 	public native static float vsdot(int n, float[] dx, int dxOffset, int incx, float[] dy, int dyOffset, int incy);
 
+	/**
+	 * dot product for double vector
+	 * 
+	 * @param n
+	 * @param dx
+	 * @param dxOffset
+	 * @param incx
+	 * @param dy
+	 * @param dyOffset
+	 * @param incy
+	 * @return
+	 */
 	public native static double vddot(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy);
 
+	/**
+	 * performs the rank 1 operation A := alpha*x*y' + A use float matrix
+	 * 
+	 * @param m
+	 * @param n
+	 * @param alpha
+	 * @param x
+	 * @param xOffset
+	 * @param incx
+	 * @param y
+	 * @param yOffset
+	 * @param incy
+	 * @param a
+	 * @param aOffset
+	 * @param lda
+	 */
 	public native static void vsger(int m, int n, float alpha, float[] x, int xOffset, int incx, float[] y, int yOffset,
 			int incy, float[] a, int aOffset, int lda);
 
+	/**
+	 * performs the rank 1 operation A := alpha*x*y' + A use double matrix
+	 * 
+	 * @param m
+	 * @param n
+	 * @param alpha
+	 * @param x
+	 * @param xOffset
+	 * @param incx
+	 * @param y
+	 * @param yOffset
+	 * @param incy
+	 * @param a
+	 * @param aOffset
+	 * @param lda
+	 */
 	public native static void vdger(int m, int n, double alpha, double[] x, int xOffset, int incx, double[] y,
 			int yOffset, int incy, double[] a, int aOffset, int lda);
 
+	/**
+	 * x = a*x
+	 * 
+	 * @param n
+	 * @param sa
+	 * @param sx
+	 * @param offset
+	 * @param incx
+	 */
 	public native static void vsscal(int n, float sa, float[] sx, int offset, int incx);
 
+	/**
+	 * x = a*x
+	 * 
+	 * @param n
+	 * @param sa
+	 * @param sx
+	 * @param offset
+	 * @param incx
+	 */
 	public native static void vdscal(int n, double sa, double[] sx, int offset, int incx);
 
 	/**

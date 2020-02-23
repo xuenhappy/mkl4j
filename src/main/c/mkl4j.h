@@ -45,6 +45,102 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_waitPolicy
 
 /*
  * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsSwap
+ * Signature: (I[FII[FII)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsSwap
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jint, jfloatArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdSwap
+ * Signature: (I[DII[DII)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdSwap
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jint, jdoubleArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsCopy
+ * Signature: (I[FII[FII)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsCopy
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jint, jfloatArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdCopy
+ * Signature: (I[DII[DII)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdCopy
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jint, jdoubleArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsAsum
+ * Signature: (I[FII)F
+ */
+JNIEXPORT jfloat JNICALL Java_org_bamboo_mkl4j_MKL_vsAsum
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdAsum
+ * Signature: (I[DII)D
+ */
+JNIEXPORT jdouble JNICALL Java_org_bamboo_mkl4j_MKL_vdAsum
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsNrm2
+ * Signature: (I[FII)F
+ */
+JNIEXPORT jfloat JNICALL Java_org_bamboo_mkl4j_MKL_vsNrm2
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdNrm2
+ * Signature: (I[DII)D
+ */
+JNIEXPORT jdouble JNICALL Java_org_bamboo_mkl4j_MKL_vdNrm2
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsAmax
+ * Signature: (I[FII)I
+ */
+JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vsAmax
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdAmax
+ * Signature: (I[DII)I
+ */
+JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vdAmax
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsAmin
+ * Signature: (I[FII)I
+ */
+JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vsAmin
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdAmin
+ * Signature: (I[DII)I
+ */
+JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vdAmin
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
  * Method:    vsAdd
  * Signature: (I[FI[FI[FI)V
  */
