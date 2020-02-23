@@ -1,9 +1,9 @@
 # vim:noet
 #export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-#source /opt/intel/compilers_and_libraries_2020/linux/bin/compilervars.sh intel64
+#source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
 CC	=	icc
 SUFFIX  = so
-CFLAGS  = -c ${JAVA_HOME}/include/linux -I ${JAVA_HOME}/include -I/opt/intel/mkl/include -std=c99 \
+CFLAGS  = -c -I ${JAVA_HOME}/include/linux -I ${JAVA_HOME}/include -I/opt/intel/mkl/include -std=c99 \
                   -fPIC -fstack-protector-all
                   
 LDFLAGS = -Wall -ldl -liomp5 -shared -mkl=parallel -qopenmp \
