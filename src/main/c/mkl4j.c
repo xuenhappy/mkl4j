@@ -184,7 +184,7 @@ JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vsAmax(JNIEnv *env, jclass cls,
 	jfloat *jni_x = (*env)->GetPrimitiveArrayCritical(env, x, JNI_FALSE);
 	int res = cblas_isamax(n, jni_x + xOffset, intcx);
 	(*env)->ReleasePrimitiveArrayCritical(env, x, jni_x, 0);
-	return res + xOffset;
+	return res;
 
 }
 
@@ -198,7 +198,7 @@ JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vdAmax(JNIEnv *env, jclass cls,
 	jdouble *jni_x = (*env)->GetPrimitiveArrayCritical(env, x, JNI_FALSE);
 	int res = cblas_idamax(n, jni_x + xOffset, intcx);
 	(*env)->ReleasePrimitiveArrayCritical(env, x, jni_x, 0);
-	return res + xOffset;
+	return res;
 
 }
 
@@ -212,7 +212,7 @@ JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vsAmin(JNIEnv *env, jclass cls,
 	jfloat *jni_x = (*env)->GetPrimitiveArrayCritical(env, x, JNI_FALSE);
 	int res = cblas_isamin(n, jni_x + xOffset, intcx);
 	(*env)->ReleasePrimitiveArrayCritical(env, x, jni_x, 0);
-	return res + xOffset;
+	return res;
 
 }
 
@@ -226,7 +226,7 @@ JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_vdAmin(JNIEnv *env, jclass cls,
 	jdouble *jni_x = (*env)->GetPrimitiveArrayCritical(env, x, JNI_FALSE);
 	int res = cblas_idamin(n, jni_x + xOffset, intcx);
 	(*env)->ReleasePrimitiveArrayCritical(env, x, jni_x, 0);
-	return res + xOffset;
+	return res;
 
 }
 
