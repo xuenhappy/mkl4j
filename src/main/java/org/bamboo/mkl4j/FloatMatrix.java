@@ -49,7 +49,6 @@ public class FloatMatrix {
 		this.columns = w;
 		this.rows = h;
 		this.data = new float[w * h];
-		Arrays.fill(this.data, 0);
 	}
 
 	/**
@@ -65,14 +64,13 @@ public class FloatMatrix {
 		this.columns = mlen;
 		this.rows = m.length;
 		this.data = new float[this.columns * this.rows];
-		Arrays.fill(this.data, 0);
 		for (int i = 0; i < this.rows; i++)
 			MKL.vsCopy(m[i].length, m[i], 0, 1, this.data, i, this.rows);
 
 	}
 
 	/**
-	 * trans matrix
+	 * transpose this matrix
 	 * 
 	 * @return
 	 */
@@ -83,11 +81,23 @@ public class FloatMatrix {
 		return o;
 	}
 
+	/**
+	 * this data to 2 dim array
+	 * 
+	 * @return
+	 */
 	public float[][] to2DArray() {
-		// TODO Auto-generated method stub
-		return null;
+		float[][] dat = new float[this.rows][this.columns];
+		for (int i = 0; i < dat.length; i++)
+			MKL.vsCopy(dat[i].length, this.data, i, this.rows, dat[i], 0, 1);
+		return dat;
 	}
 
+	/**
+	 * this data to column major array
+	 * 
+	 * @return
+	 */
 	public float[] toArray() {
 		return this.data;
 	}
@@ -108,24 +118,20 @@ public class FloatMatrix {
 	}
 
 	public FloatMatrix getRow(int i) {
+		if (i < 0 || i >= this.rows)
+			throw new RuntimeException("index=" + i + " out of row=" + this.rows);
+
 		FloatMatrix m = new FloatMatrix(columns, 1);
 		MKL.vsCopy(columns, data, i, rows, m.data, 0, 1);
 		return m;
 	}
 
-	public int[] columnArgmaxs() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int argmax() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public FloatMatrix columnMaxs() {
-		// TODO Auto-generated method stub
-		return null;
+	public FloatMatrix getCol(int i) {
+		if (i < 0 || i >= this.columns)
+			throw new RuntimeException("index=" + i + " out of col=" + this.columns);
+		FloatMatrix m = new FloatMatrix(columns, 1);
+		System.arraycopy(data, i * this.rows, m.data, 0, this.rows);
+		return m;
 	}
 
 	public float get(int i, int j) {
@@ -261,6 +267,8 @@ public class FloatMatrix {
 			MKL.vsscal(a.data.length, sc, a.data, 0, 1);
 			return;
 		}
+		if (o == a)// ori data
+			sc = sc - 1f;
 		MKL.vsaxpy(a.data.length, sc, a.data, 0, 1, o.data, 0, 1);
 	}
 
@@ -337,7 +345,10 @@ public class FloatMatrix {
 			throw new RuntimeException("matrix row size must eq vector size");
 		if (o.columns != a.columns || o.rows != a.rows)
 			throw new RuntimeException("out matrix size must eq val size");
-		//TODO
+		if (o != a) // copy ori data
+			System.arraycopy(a, 0, o.data, 0, a.data.length);
+		for (int i = 0; i < a.rows; i++)// add vector
+			MKL.vsaxpy(a.columns, 1.0f, blas.data, 0, 1, o.data, i, o.rows);
 	}
 
 	/**
@@ -354,6 +365,70 @@ public class FloatMatrix {
 		System.arraycopy(x.data, 0, m.data, 0, x.data.length);
 		System.arraycopy(y.data, 0, m.data, x.data.length, y.data.length);
 		return m;
+	}
+
+	/**
+	 * calculate the nromal 2 dist in dim
+	 * 
+	 * @param a
+	 * @param dim
+	 * @return
+	 */
+	public static float[] nrm2(FloatMatrix a, char dim) {
+		if (dim == 'r') {
+			float[] res = new float[a.rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = MKL.vsNrm2(a.columns, a.data, i, a.rows);
+			return res;
+		}
+		float[] res = new float[a.columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = MKL.vsNrm2(a.rows, a.data, i * a.rows, 1);
+		return res;
+	}
+
+	/**
+	 * the max index every row or column
+	 * 
+	 * @param a
+	 * @param dim
+	 * @return
+	 */
+	public static int[] argMax(FloatMatrix a, char dim) {
+		if (dim == 'r') {
+			int[] res = new int[a.rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = MKL.vsAmax(a.columns, a.data, i, a.rows);
+			return res;
+		}
+
+		int[] res = new int[a.columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = MKL.vsAmax(a.rows, a.data, i * a.rows, 1);
+		return res;
+
+	}
+
+	/**
+	 * the min index every row or column
+	 * 
+	 * @param a
+	 * @param dim
+	 * @return
+	 */
+	public static int[] argMin(FloatMatrix a, char dim) {
+		if (dim == 'r') {
+			int[] res = new int[a.rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = MKL.vsAmin(a.columns, a.data, i, a.rows);
+			return res;
+		}
+
+		int[] res = new int[a.columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = MKL.vsAmin(a.rows, a.data, i * a.rows, 1);
+		return res;
+
 	}
 
 	@Override
