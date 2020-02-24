@@ -1,5 +1,6 @@
 # vim:noet
 #export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+#source /opt/intel/mkl/bin/mklvars.sh  intel64
 #source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
 CC	=	icc
 SUFFIX  = so

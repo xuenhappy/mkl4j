@@ -1,5 +1,6 @@
 # vim:noet
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-13.jdk/Contents/Home
+#source /opt/intel/mkl/bin/mklvars.sh  intel64
 #source /opt/intel/compilers_and_libraries/mac/bin/compilervars.sh intel64
 SUFFIX = dylib
 
