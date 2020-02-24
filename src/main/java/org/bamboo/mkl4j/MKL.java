@@ -414,7 +414,9 @@ public class MKL {
 	public native static void vdAbs(int n, double[] a, int aOffset, double[] y, int yOffset);
 
 	/**
-	 * matrix matrix multiply C(m*n)=alpha*AB+beta*C
+	 * @see <a href=
+	 *      "https://software.intel.com/en-us/mkl-developer-reference-c-cblas-gemm">
+	 *      see intel document: </a> matrix matrix multiply C(m*n)=alpha*AB+beta*C
 	 * 
 	 * @param transa
 	 * @param transb

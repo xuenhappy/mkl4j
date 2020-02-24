@@ -406,15 +406,16 @@ public class FloatMatrix {
 				if (a.columns != b.rows)
 					throw new RuntimeException(" a.col=" + a.columns + " not eq b.row=" + b.rows);
 				FloatMatrix o = new FloatMatrix(b.columns, a.rows);
-				MKL.vsgemm('n', 'n', o.rows, o.columns, a.columns, alpha, a.data, 0, 1, b.data, 0, 1, 0.0f, o.data, 0,
-						1);
+				MKL.vsgemm('n', 'n', o.rows, o.columns, a.columns, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f,
+						o.data, 0, o.rows);
 				return o;
 			}
 
 			if (a.columns != b.columns)
 				throw new RuntimeException(" a.col=" + a.columns + " not eq b.col=" + b.columns);
 			FloatMatrix o = new FloatMatrix(b.rows, a.rows);
-			MKL.vsgemm('n', 't', o.rows, o.columns, a.columns, alpha, a.data, 0, 1, b.data, 0, 1, 0.0f, o.data, 0, 1);
+			MKL.vsgemm('n', 't', o.rows, o.columns, a.columns, alpha, a.data, 0, a.rows, b.data, 0, b.columns, 0.0f,
+					o.data, 0, o.rows);
 			return o;
 		}
 
@@ -422,14 +423,16 @@ public class FloatMatrix {
 			if (a.rows != b.rows)
 				throw new RuntimeException(" a.row=" + a.rows + " not eq b.row=" + b.rows);
 			FloatMatrix o = new FloatMatrix(b.columns, a.columns);
-			MKL.vsgemm('t', 'n', o.rows, o.columns, a.rows, alpha, a.data, 0, 1, b.data, 0, 1, 0.0f, o.data, 0, 1);
+			MKL.vsgemm('t', 'n', o.rows, o.columns, a.rows, alpha, a.data, 0, a.columns, b.data, 0, b.rows, 0.0f,
+					o.data, 0, a.columns);
 			return o;
 		}
 
 		if (a.rows != b.columns)
 			throw new RuntimeException(" a.row=" + a.rows + " not eq b.col=" + b.columns);
 		FloatMatrix o = new FloatMatrix(b.rows, a.columns);
-		MKL.vsgemm('t', 't', o.rows, o.columns, a.rows, alpha, a.data, 0, 1, b.data, 0, 1, 0.0f, o.data, 0, 1);
+		MKL.vsgemm('t', 't', o.rows, o.columns, a.rows, alpha, a.data, 0, a.columns, b.data, 0, b.columns, 0.0f, o.data,
+				0, a.columns);
 		return o;
 
 	}
@@ -496,7 +499,4 @@ public class FloatMatrix {
 		return true;
 	}
 
-	
-
-	
 }
