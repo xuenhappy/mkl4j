@@ -71,7 +71,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 	}
 
 	@Override
-	public DoubleMatrix exp(FloatMatrix out) {
+	public DoubleMatrix exp(DoubleMatrix out) {
 		// TODO Auto-generated method stub
 		return null;
 	}

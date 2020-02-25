@@ -102,7 +102,7 @@ public abstract class Matrix<T> {
 	 * @param val
 	 * @param out
 	 */
-	public abstract T exp(FloatMatrix out);
+	public abstract T exp(T out);
 
 	/**
 	 * o=this+b
