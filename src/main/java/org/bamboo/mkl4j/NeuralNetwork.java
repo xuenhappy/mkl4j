@@ -10,7 +10,7 @@ import java.io.IOException;
  * @author xuen
  *
  */
-public interface NeuralNetwork<T extends Matrix<T>> {
+public interface NeuralNetwork{
 	public void load(DataInputStream in) throws IOException;
 	public void save(DataOutputStream out) throws IOException;
 

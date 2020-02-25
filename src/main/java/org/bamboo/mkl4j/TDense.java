@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  * @param <T>
  */
-public class TDense<T extends Matrix<T>> implements NeuralNetwork<T> {
+public class TDense<T extends Matrix<T>> implements NeuralNetwork{
 	private MatrixFunc<T> activation;
 	private T weight;
 	private T blas;

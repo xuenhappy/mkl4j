@@ -10,7 +10,7 @@ import java.io.IOException;
  * @author xuen
  *
  */
-public abstract class Matrix<T extends Matrix<T>> {
+public abstract class Matrix<T> {
 	/**
 	 * row of this matrix
 	 */

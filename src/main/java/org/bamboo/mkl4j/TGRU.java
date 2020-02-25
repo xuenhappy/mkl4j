@@ -12,7 +12,7 @@ import java.lang.reflect.Array;
  *
  * @param <T>
  */
-public class TGRU<T extends Matrix<T>> implements NeuralNetwork<T> {
+public class TGRU<T extends Matrix<T>> implements NeuralNetwork{
 	private T wIh;
 	private T wHh;
 	private T bIh;
