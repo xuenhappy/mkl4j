@@ -9,16 +9,7 @@ import java.util.Arrays;
  * @author xuen
  *
  */
-public class FloatMatrix {
-	/**
-	 * row of this matrix
-	 */
-	public final int rows;
-	/**
-	 * columns of this matrix
-	 */
-	public final int columns;
-
+public class FloatMatrix extends Matrix<FloatMatrix> {
 	/**
 	 * the column major data
 	 */
@@ -32,11 +23,10 @@ public class FloatMatrix {
 	 * @param v
 	 */
 	public FloatMatrix(int w, int h, float[] v) {
+		super(w, h);
 		if (v == null || v.length < w * h)
 			throw new RuntimeException("data must be not null and  num more than want");
 		this.data = v;
-		this.columns = w;
-		this.rows = h;
 	}
 
 	/**
@@ -46,8 +36,7 @@ public class FloatMatrix {
 	 * @param h
 	 */
 	public FloatMatrix(int w, int h) {
-		this.columns = w;
-		this.rows = h;
+		super(w, h);
 		this.data = new float[w * h];
 	}
 
@@ -57,15 +46,13 @@ public class FloatMatrix {
 	 * @param m
 	 */
 	public FloatMatrix(float[][] m) {
-		int mlen = 0;
-		for (int i = 0; i < m.length; i++)
-			if (mlen < m[0].length)
-				mlen = m[0].length;
-		this.columns = mlen;
-		this.rows = m.length;
+		super(m[0].length, m.length);
 		this.data = new float[this.columns * this.rows];
-		for (int i = 0; i < this.rows; i++)
+		for (int i = 0; i < this.rows; i++) {
+			if (m[i].length != this.columns)
+				throw new RuntimeException("float array must have the same length!");
 			MKL.vsCopy(m[i].length, m[i], 0, 1, this.data, i, this.rows);
+		}
 
 	}
 
@@ -218,11 +205,11 @@ public class FloatMatrix {
 	 * @param scale
 	 * @param o
 	 */
-	public FloatMatrix add(float scale, FloatMatrix o) {
+	public FloatMatrix add(double scale, FloatMatrix o) {
 		if (o.columns != this.columns || o.rows != this.rows)
 			throw new RuntimeException("out matrix size must eq val size");
 		for (int i = 0; i < o.data.length; i++)
-			o.data[i] = this.data[i] + scale;
+			o.data[i] = this.data[i] + (float) scale;
 		return o;
 	}
 
@@ -266,14 +253,14 @@ public class FloatMatrix {
 	 * @param b
 	 * @param o
 	 */
-	public FloatMatrix mul(float sc, FloatMatrix o) {
+	public FloatMatrix mul(double sc, FloatMatrix o) {
 		if (o.columns != this.columns || o.rows != this.rows)
 			throw new RuntimeException("out matrix size must eq val size");
 		if (o == this) {
-			MKL.vsscal(this.data.length, sc, this.data, 0, 1);
+			MKL.vsscal(this.data.length, (float) sc, this.data, 0, 1);
 			return o;
 		}
-		MKL.vsaxpy(this.data.length, sc, this.data, 0, 1, o.data, 0, 1);
+		MKL.vsaxpy(this.data.length, (float) sc, this.data, 0, 1, o.data, 0, 1);
 		return o;
 	}
 
@@ -300,8 +287,8 @@ public class FloatMatrix {
 	 * @param b
 	 * @param o
 	 */
-	public FloatMatrix div(float sc, FloatMatrix o) {
-		return mul(1.0f / sc, o);
+	public FloatMatrix div(double sc, FloatMatrix o) {
+		return mul(1.0 / sc, o);
 	}
 
 	/**
@@ -311,17 +298,17 @@ public class FloatMatrix {
 	 * @param dim
 	 * @return
 	 */
-	public float[] nrm2(char dim) {
+	public FloatMatrix nrm2(char dim) {
 		if (dim == 'r') {
 			float[] res = new float[rows];
 			for (int i = 0; i < res.length; i++)
 				res[i] = MKL.vsNrm2(columns, data, i, rows);
-			return res;
+			return new FloatMatrix(1, rows, res);
 		}
 		float[] res = new float[columns];
 		for (int i = 0; i < res.length; i++)
 			res[i] = MKL.vsNrm2(rows, data, i * rows, 1);
-		return res;
+		return new FloatMatrix(columns, 1, res);
 	}
 
 	/**
@@ -367,47 +354,6 @@ public class FloatMatrix {
 
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder buf = new StringBuilder();
-		buf.append(String.format("FloatMatrix [size=(%d*%d)]\n", this.rows, this.columns));
-		boolean skipr = false;
-		for (int i = 0; i < rows; i++) {
-			if (i > 10 && i < rows - 6) {
-				if (skipr)
-					continue;
-				skipr = true;
-				buf.append("..............................\n");
-			}
-
-			buf.append("[");
-			boolean skipc = false;
-			for (int j = 0; j < columns; j++) {
-				if (j > 8 && j < columns - 5) {
-					if (skipc)
-						continue;
-					skipc = true;
-					buf.append("....,");
-				}
-				buf.append(get(i, j)).append(",");
-			}
-			if (this.columns > 0)
-				buf.setLength(buf.length() - 1);
-			buf.append("]\n");
-		}
-		if (this.rows > 0)
-			buf.setLength(buf.length() - 1);
-		return buf.toString();
-	}
-
-	/****
-	 * 
-	 * ===================<br/>
-	 * static method <br/>
-	 * ===================<br/>
-	 * 
-	 */
-
 	/**
 	 * get zeros matrix
 	 * 
@@ -415,7 +361,7 @@ public class FloatMatrix {
 	 * @param rows
 	 * @return
 	 */
-	public static FloatMatrix zeros(int col, int rows) {
+	public FloatMatrix zeros(int col, int rows) {
 		return new FloatMatrix(col, rows);
 	}
 
@@ -426,39 +372,39 @@ public class FloatMatrix {
 	 * @param b
 	 * @param o
 	 */
-	public static FloatMatrix mmul(FloatMatrix a, FloatMatrix b, boolean transA, boolean transB, float alpha) {
+	public FloatMatrix mmul(FloatMatrix b, boolean transA, boolean transB, double alpha) {
 		if (!transA) {
 			if (!transB) {
-				if (a.columns != b.rows)
-					throw new RuntimeException(" a.col=" + a.columns + " not eq b.row=" + b.rows);
-				FloatMatrix o = new FloatMatrix(b.columns, a.rows);
-				MKL.vsgemm('n', 'n', o.rows, o.columns, a.columns, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f,
-						o.data, 0, o.rows);
+				if (this.columns != b.rows)
+					throw new RuntimeException(" a.col=" + this.columns + " not eq b.row=" + b.rows);
+				FloatMatrix o = new FloatMatrix(b.columns, this.rows);
+				MKL.vsgemm('n', 'n', o.rows, o.columns, this.columns, (float) alpha, this.data, 0, this.rows, b.data, 0,
+						b.rows, 0.0f, o.data, 0, o.rows);
 				return o;
 			}
 
-			if (a.columns != b.columns)
-				throw new RuntimeException(" a.col=" + a.columns + " not eq b.col=" + b.columns);
-			FloatMatrix o = new FloatMatrix(b.rows, a.rows);
-			MKL.vsgemm('n', 't', o.rows, o.columns, a.columns, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f,
-					o.data, 0, o.rows);
+			if (this.columns != b.columns)
+				throw new RuntimeException(" a.col=" + this.columns + " not eq b.col=" + b.columns);
+			FloatMatrix o = new FloatMatrix(b.rows, this.rows);
+			MKL.vsgemm('n', 't', o.rows, o.columns, this.columns, (float) alpha, this.data, 0, this.rows, b.data, 0,
+					b.rows, 0.0f, o.data, 0, o.rows);
 			return o;
 		}
 
 		if (!transB) {
-			if (a.rows != b.rows)
-				throw new RuntimeException(" a.row=" + a.rows + " not eq b.row=" + b.rows);
-			FloatMatrix o = new FloatMatrix(b.columns, a.columns);
-			MKL.vsgemm('t', 'n', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f, o.data,
-					0, o.rows);
+			if (this.rows != b.rows)
+				throw new RuntimeException(" a.row=" + this.rows + " not eq b.row=" + b.rows);
+			FloatMatrix o = new FloatMatrix(b.columns, this.columns);
+			MKL.vsgemm('t', 'n', o.rows, o.columns, this.rows, (float) alpha, this.data, 0, this.rows, b.data, 0,
+					b.rows, 0.0f, o.data, 0, o.rows);
 			return o;
 		}
 
-		if (a.rows != b.columns)
-			throw new RuntimeException(" a.row=" + a.rows + " not eq b.col=" + b.columns);
-		FloatMatrix o = new FloatMatrix(b.rows, a.columns);
-		MKL.vsgemm('t', 't', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f, o.data, 0,
-				o.rows);
+		if (this.rows != b.columns)
+			throw new RuntimeException(" a.row=" + this.rows + " not eq b.col=" + b.columns);
+		FloatMatrix o = new FloatMatrix(b.rows, this.columns);
+		MKL.vsgemm('t', 't', o.rows, o.columns, this.rows, (float) alpha, this.data, 0, this.rows, b.data, 0, b.rows,
+				0.0f, o.data, 0, o.rows);
 		return o;
 
 	}
@@ -470,15 +416,15 @@ public class FloatMatrix {
 	 * @param b
 	 * @return
 	 */
-	public static float dot(FloatMatrix a, FloatMatrix b) {
-		if (a.columns != 1 && a.rows != 1)
+	public double vdot(FloatMatrix b) {
+		if (this.columns != 1 && this.rows != 1)
 			throw new RuntimeException(" matrix a must be a rank 1 vecctor");
 		if (b.columns != 1 && b.rows != 1)
 			throw new RuntimeException(" matrix b must be a rank 1 vecctor");
-		int size = Math.max(a.columns, a.rows);
+		int size = Math.max(this.columns, this.rows);
 		if (size != Math.max(b.columns, b.rows))
 			throw new RuntimeException("matrix must be same size");
-		return MKL.vsdot(size, a.data, 0, 1, b.data, 0, 1);
+		return MKL.vsdot(size, this.data, 0, 1, b.data, 0, 1);
 	}
 
 	/**
@@ -488,12 +434,12 @@ public class FloatMatrix {
 	 * @param y
 	 * @return
 	 */
-	public static FloatMatrix concatColumn(FloatMatrix x, FloatMatrix y) {
-		if (x.rows != y.rows)
-			throw new RuntimeException("matrix x.row=" + x.rows + " not eq y.row=" + y.rows);
-		FloatMatrix m = new FloatMatrix(x.columns + y.columns, x.rows);
-		System.arraycopy(x.data, 0, m.data, 0, x.data.length);
-		System.arraycopy(y.data, 0, m.data, x.data.length, y.data.length);
+	public FloatMatrix concatColumn(FloatMatrix y) {
+		if (this.rows != y.rows)
+			throw new RuntimeException("matrix x.row=" + this.rows + " not eq y.row=" + y.rows);
+		FloatMatrix m = new FloatMatrix(this.columns + y.columns, this.rows);
+		System.arraycopy(this.data, 0, m.data, 0, this.data.length);
+		System.arraycopy(y.data, 0, m.data, this.data.length, y.data.length);
 		return m;
 	}
 
@@ -523,6 +469,11 @@ public class FloatMatrix {
 		if (rows != other.rows)
 			return false;
 		return true;
+	}
+
+	@Override
+	public double getElement(int row, int column) {
+		return get(row, column);
 	}
 
 }
