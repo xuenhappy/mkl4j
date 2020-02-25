@@ -370,8 +370,7 @@ public class FloatMatrix {
 	@Override
 	public String toString() {
 		StringBuilder buf = new StringBuilder();
-		buf.append(String.format("FloatMatrix [size=(%d*%d)]", this.rows, this.columns));
-		buf.append("\n[");
+		buf.append(String.format("FloatMatrix [size=(%d*%d)]\n", this.rows, this.columns));
 		boolean skipr = false;
 		for (int i = 0; i < rows; i++) {
 			if (i > 10 && i < rows - 6) {
@@ -380,6 +379,7 @@ public class FloatMatrix {
 				skipr = true;
 				buf.append("..............................\n");
 			}
+
 			buf.append("[");
 			boolean skipc = false;
 			for (int j = 0; j < columns; j++) {
@@ -393,11 +393,10 @@ public class FloatMatrix {
 			}
 			if (this.columns > 0)
 				buf.setLength(buf.length() - 1);
-			buf.append("],\n");
+			buf.append("]\n");
 		}
 		if (this.rows > 0)
 			buf.setLength(buf.length() - 1);
-		buf.append("]");
 		return buf.toString();
 	}
 
@@ -450,16 +449,16 @@ public class FloatMatrix {
 			if (a.rows != b.rows)
 				throw new RuntimeException(" a.row=" + a.rows + " not eq b.row=" + b.rows);
 			FloatMatrix o = new FloatMatrix(b.columns, a.columns);
-			MKL.vsgemm('t', 'n', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f,
-					o.data, 0,o.rows);
+			MKL.vsgemm('t', 'n', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f, o.data,
+					0, o.rows);
 			return o;
 		}
 
 		if (a.rows != b.columns)
 			throw new RuntimeException(" a.row=" + a.rows + " not eq b.col=" + b.columns);
 		FloatMatrix o = new FloatMatrix(b.rows, a.columns);
-		MKL.vsgemm('t', 't', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f, o.data,
-				0, o.rows);
+		MKL.vsgemm('t', 't', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f, o.data, 0,
+				o.rows);
 		return o;
 
 	}
