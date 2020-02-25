@@ -393,7 +393,7 @@ public class FloatMatrix {
 			}
 			if (this.columns > 0)
 				buf.setLength(buf.length() - 1);
-			buf.append("]\n");
+			buf.append("],\n");
 		}
 		if (this.rows > 0)
 			buf.setLength(buf.length() - 1);
