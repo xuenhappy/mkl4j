@@ -1,8 +1,8 @@
 package org.bamboo.mkl4j;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Array;
 
 /**
@@ -106,16 +106,18 @@ public class TGRU<T extends Matrix<T>> implements NeuralNetwork<T> {
 		return outputs;
 	}
 
-	@Override
-	public void load(InputStream in) throws IOException {
-		// TODO Auto-generated method stub
+	
 
+	@Override
+	public void load(DataInputStream in) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void save(OutputStream out) throws IOException {
+	public void save(DataOutputStream out) throws IOException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

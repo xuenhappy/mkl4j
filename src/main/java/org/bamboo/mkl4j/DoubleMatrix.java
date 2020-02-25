@@ -1,5 +1,9 @@
 package org.bamboo.mkl4j;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 /**
  * this is a double Matrix
  * 
@@ -17,6 +21,11 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		if (v == null || v.length < w * h)
 			throw new RuntimeException("data must be not null and  num more than want");
 		this.data = v;
+	}
+
+	public DoubleMatrix(int w, int h) {
+		super(w, h);
+		this.data = new double[w * h];
 	}
 
 	@Override
@@ -153,18 +162,35 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 
 	@Override
 	public DoubleMatrix zeros(int col, int rows) {
-		// TODO Auto-generated method stub
-		return null;
+		return new DoubleMatrix(col, rows);
 	}
 
 	@Override
 	public double getElement(int row, int column) {
-		// TODO Auto-generated method stub
-		return 0;
+		return get(row, column);
 	}
 
-	
-	
-	
+	private double get(int row, int column) {
+		return data[row + column * this.rows];
+	}
+
+	@Override
+	public DoubleMatrix load(DataInputStream in) throws IOException {
+		int h = in.readInt();
+		int w = in.readInt();
+		double[] v = new double[w * h];
+		for (int i = 0; i < v.length; i++)
+			v[i] = in.readDouble();
+		DoubleMatrix m = new DoubleMatrix(w, h, v);
+		return m;
+	}
+
+	@Override
+	public void save(DataOutputStream out) throws IOException {
+		out.writeInt(rows);
+		out.writeInt(columns);
+		for (int i = 0; i < data.length; i++)
+			out.writeDouble(data[i]);
+	}
 
 }

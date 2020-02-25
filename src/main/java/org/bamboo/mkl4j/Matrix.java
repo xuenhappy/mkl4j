@@ -1,5 +1,9 @@
 package org.bamboo.mkl4j;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 /**
  * matrix out use
  * 
@@ -275,5 +279,18 @@ public abstract class Matrix<T extends Matrix<T>> {
 			buf.setLength(buf.length() - 1);
 		return buf.toString();
 	}
+	
+	/**
+	 * load  the data from inputstream
+	 * @param in
+	 * @throws IOException
+	 */
+	public abstract T load(DataInputStream in) throws IOException;
+	/**
+	 * save this to stream 
+	 * @param out
+	 * @throws IOException
+	 */
+	public abstract void save(DataOutputStream out) throws IOException;
 
 }

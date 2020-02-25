@@ -1,8 +1,8 @@
 package org.bamboo.mkl4j;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * this is a dense net work for torch
@@ -34,13 +34,37 @@ public class TDense<T extends Matrix<T>> implements NeuralNetwork<T> {
 		return val;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void load(InputStream in) throws IOException {
-
+	public void load(DataInputStream in) throws IOException {
+		this.weight = this.weight.load(in);
+		if (in.readChar() == 'c') {
+			this.blas = this.blas.load(in);
+		} else {
+			this.blas = null;
+		}
+		if (in.readChar() == 'k') {
+			this.activation = Activation.load(in, this.blas.getClass());
+		} else {
+			this.activation = null;
+		}
 	}
 
 	@Override
-	public void save(OutputStream out) throws IOException {
+	public void save(DataOutputStream out) throws IOException {
+		this.weight.save(out);
+		if (this.blas != null) {
+			out.writeChar('c');
+			this.blas.save(out);
+		} else {
+			out.writeChar('n');
+		}
+		if (this.activation != null) {
+			out.writeChar('k');
+			Activation.save(out, activation);
+		} else {
+			out.writeChar('l');
+		}
 
 	}
 

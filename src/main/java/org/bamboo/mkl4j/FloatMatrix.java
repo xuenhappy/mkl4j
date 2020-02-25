@@ -1,5 +1,8 @@
 package org.bamboo.mkl4j;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -474,6 +477,25 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	@Override
 	public double getElement(int row, int column) {
 		return get(row, column);
+	}
+
+	@Override
+	public FloatMatrix load(DataInputStream in) throws IOException {
+		int h = in.readInt();
+		int w = in.readInt();
+		float[] v = new float[w * h];
+		for (int i = 0; i < v.length; i++)
+			v[i] = in.readFloat();
+		FloatMatrix m = new FloatMatrix(w, h, v);
+		return m;
+	}
+
+	@Override
+	public void save(DataOutputStream out) throws IOException {
+		out.writeInt(rows);
+		out.writeInt(columns);
+		for (int i = 0; i < data.length; i++)
+			out.writeFloat(data[i]);
 	}
 
 }
