@@ -50,6 +50,9 @@ public class TestFloatMt {
 		System.out.println(m);
 		System.out.println(n1);
 		System.out.println(m.mmul(n1, true, false, 1.0f));
+		System.out.println("**************10****************");
+		System.out.println(m.sum('r'));
+		System.out.println(m.sum('c'));
 
 	}
 

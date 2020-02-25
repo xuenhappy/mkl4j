@@ -193,4 +193,10 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 			out.writeDouble(data[i]);
 	}
 
+	@Override
+	public DoubleMatrix sum(char dim) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

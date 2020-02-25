@@ -498,4 +498,20 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 			out.writeFloat(data[i]);
 	}
 
+	@Override
+	public FloatMatrix sum(char dim) {
+		if (dim == 'r') {
+			float[] res = new float[rows];
+			float[] op = new float[columns];
+			Arrays.fill(op, 1);
+			MKL.vsgemv('n', rows, columns, 1.0f, this.data, 0, this.rows, op, 0, 1, 0, res, 0, 1);
+			return new FloatMatrix(1, rows, res);
+		}
+		float[] res = new float[columns];
+		float[] op = new float[rows];
+		Arrays.fill(op, 1);
+		MKL.vsgemv('t', rows, columns, 1.0f, this.data, 0, this.rows, op, 0, 1, 0, res, 0, 1);
+		return new FloatMatrix(columns, 1, res);
+	}
+
 }

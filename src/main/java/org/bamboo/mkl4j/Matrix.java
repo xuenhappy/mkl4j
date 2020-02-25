@@ -103,6 +103,8 @@ public abstract class Matrix<T> {
 	 * @param out
 	 */
 	public abstract T exp(T out);
+	
+	
 
 	/**
 	 * o=this+b
@@ -174,11 +176,20 @@ public abstract class Matrix<T> {
 	 * @param o
 	 */
 	public abstract T div(double sc, T o);
+	
+
+	/**
+	 * sum of along  row or column dim
+	 * @param dim 'r' along row ,'c' along column
+	 * @return
+	 */
+	public abstract T sum(char dim);
+	
 
 	/**
 	 * cal this nrm of the matrix
 	 * 
-	 * @param dim
+	 * @param dim 'r' along row ,'c' along column
 	 * @return
 	 */
 	public abstract T nrm2(char dim);
@@ -187,7 +198,7 @@ public abstract class Matrix<T> {
 	 * the max index every row or column
 	 * 
 	 * @param a
-	 * @param dim
+	 * @param dim 'r' along row ,'c' along column
 	 * @return
 	 */
 	public abstract int[] argMax(char dim);
@@ -196,7 +207,7 @@ public abstract class Matrix<T> {
 	 * the min index every row or column
 	 * 
 	 * @param a
-	 * @param dim
+	 * @param dim 'r' along row ,'c' along column
 	 * @return
 	 */
 	public abstract int[] argMin(char dim);
