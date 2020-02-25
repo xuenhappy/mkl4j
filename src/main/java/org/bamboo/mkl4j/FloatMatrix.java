@@ -278,6 +278,33 @@ public class FloatMatrix {
 	}
 
 	/**
+	 * o=this/b
+	 * 
+	 * @param a
+	 * @param b
+	 * @param o
+	 */
+	public FloatMatrix div(FloatMatrix b, FloatMatrix o) {
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+		MKL.vsDiv(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+
+	/**
+	 * o=this/sc
+	 * 
+	 * @param a
+	 * @param b
+	 * @param o
+	 */
+	public FloatMatrix div(float sc, FloatMatrix o) {
+		return mul(1.0f / sc, o);
+	}
+
+	/**
 	 * calculate the nromal 2 dist in dim
 	 * 
 	 * @param a
@@ -414,7 +441,7 @@ public class FloatMatrix {
 			if (a.columns != b.columns)
 				throw new RuntimeException(" a.col=" + a.columns + " not eq b.col=" + b.columns);
 			FloatMatrix o = new FloatMatrix(b.rows, a.rows);
-			MKL.vsgemm('n', 't', o.rows, o.columns, a.columns, alpha, a.data, 0, a.rows, b.data, 0, b.columns, 0.0f,
+			MKL.vsgemm('n', 't', o.rows, o.columns, a.columns, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f,
 					o.data, 0, o.rows);
 			return o;
 		}
@@ -423,16 +450,16 @@ public class FloatMatrix {
 			if (a.rows != b.rows)
 				throw new RuntimeException(" a.row=" + a.rows + " not eq b.row=" + b.rows);
 			FloatMatrix o = new FloatMatrix(b.columns, a.columns);
-			MKL.vsgemm('t', 'n', o.rows, o.columns, a.rows, alpha, a.data, 0, a.columns, b.data, 0, b.rows, 0.0f,
-					o.data, 0, a.columns);
+			MKL.vsgemm('t', 'n', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f,
+					o.data, 0,o.rows);
 			return o;
 		}
 
 		if (a.rows != b.columns)
 			throw new RuntimeException(" a.row=" + a.rows + " not eq b.col=" + b.columns);
 		FloatMatrix o = new FloatMatrix(b.rows, a.columns);
-		MKL.vsgemm('t', 't', o.rows, o.columns, a.rows, alpha, a.data, 0, a.columns, b.data, 0, b.columns, 0.0f, o.data,
-				0, a.columns);
+		MKL.vsgemm('t', 't', o.rows, o.columns, a.rows, alpha, a.data, 0, a.rows, b.data, 0, b.rows, 0.0f, o.data,
+				0, o.rows);
 		return o;
 
 	}
