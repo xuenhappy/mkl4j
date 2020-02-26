@@ -129,17 +129,6 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	}
 
 	/**
-	 * get zeros marix
-	 * 
-	 * @param val
-	 * @return
-	 */
-
-	public FloatMatrix zeroLikeThis() {
-		return new FloatMatrix(this.columns, this.rows);
-	}
-
-	/**
 	 * tanh use
 	 * 
 	 * @param val
@@ -358,17 +347,6 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	}
 
 	/**
-	 * get zeros matrix
-	 * 
-	 * @param col
-	 * @param rows
-	 * @return
-	 */
-	public FloatMatrix zeros(int col, int rows) {
-		return new FloatMatrix(col, rows);
-	}
-
-	/**
 	 * o=alpha*a×b
 	 * 
 	 * @param a
@@ -514,22 +492,42 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return new FloatMatrix(columns, 1, res);
 	}
 
+	/**
+	 * get zeros matrix
+	 * 
+	 * @param col
+	 * @param rows
+	 * @return
+	 */
 	@Override
-	public FloatMatrix randomGaussian(int col, int row, double mean, double sigma) {
-		if (sigma <= 0)
-			throw new RuntimeException("sigma=" + sigma + " must be right!");
-		float[] m = new float[col * row];
-		MKL.vsRngGaussian(m.length, m, 0, (float) mean, (float) sigma);
-		return new FloatMatrix(col, row, m);
+	public FloatMatrix numFill(double num, boolean dup) {
+		FloatMatrix m = this;
+		if (dup)
+			m = new FloatMatrix(this.columns, this.rows);
+		Arrays.fill(m.data, (float) num);
+		return m;
 	}
 
 	@Override
-	public FloatMatrix randomUniform(int col, int row, double a, double b) {
+	public FloatMatrix randomGaussianFill(double mean, double sigma, boolean dup) {
+		if (sigma <= 0)
+			throw new RuntimeException("sigma=" + sigma + " must be right!");
+		FloatMatrix m = this;
+		if (dup)
+			m = new FloatMatrix(this.columns, this.rows);
+		MKL.vsRngGaussian(m.data.length, m.data, 0, (float) mean, (float) sigma);
+		return m;
+	}
+
+	@Override
+	public FloatMatrix randomUniformFill(double a, double b, boolean dup) {
 		if (a >= b)
 			throw new RuntimeException("a<b needed!");
-		float[] m = new float[col * row];
-		MKL.vsRngUniform(m.length, m, 0, (float) a, (float) b);
-		return new FloatMatrix(col, row, m);
+		FloatMatrix m = this;
+		if (dup)
+			m = new FloatMatrix(this.columns, this.rows);
+		MKL.vsRngUniform(m.data.length, m.data, 0, (float) a, (float) b);
+		return m;
 	}
 
 }

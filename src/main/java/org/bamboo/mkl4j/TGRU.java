@@ -12,7 +12,7 @@ import java.lang.reflect.Array;
  *
  * @param <T>
  */
-public class TGRU<T extends Matrix<T>> implements NeuralNetwork{
+public class TGRU<T extends Matrix<T>> implements NeuralNetwork {
 	private T wIh;
 	private T wHh;
 	private T bIh;
@@ -25,8 +25,13 @@ public class TGRU<T extends Matrix<T>> implements NeuralNetwork{
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public T zeroState(int batchSize) {
-		return this.wHh.zeros(this.wHh.rows, batchSize);
+		if (this.wHh instanceof FloatMatrix)
+			return (T) new FloatMatrix(this.wHh.rows, batchSize);
+		if (this.wHh instanceof DoubleMatrix)
+			return (T) new DoubleMatrix(this.wHh.rows, batchSize);
+		throw new RuntimeException("not support num type" + this.wHh.getClass().getName());
 	}
 
 	private T linear(T args, T weights, T biases) {
@@ -106,18 +111,16 @@ public class TGRU<T extends Matrix<T>> implements NeuralNetwork{
 		return outputs;
 	}
 
-	
-
 	@Override
 	public void load(DataInputStream in) throws IOException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void save(DataOutputStream out) throws IOException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

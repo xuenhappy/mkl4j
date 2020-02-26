@@ -83,15 +83,6 @@ public abstract class Matrix<T> {
 	public abstract T getCol(int column);
 
 	/**
-	 * get zeros marix
-	 * 
-	 * @param val
-	 * @return
-	 */
-
-	public abstract T zeroLikeThis();
-
-	/**
 	 * tanh use
 	 * 
 	 * @param val
@@ -239,26 +230,26 @@ public abstract class Matrix<T> {
 	public abstract T concatColumn(T y);
 
 	/**
-	 * create a zeros matrix use this type
+	 * fill matrix use given number
 	 * 
 	 * @param col
 	 * @param rows
 	 * @return
 	 */
 
-	public abstract T zeros(int col, int rows);
+	public abstract T numFill(double num, boolean dup);
 
 	/**
-	 * gen a matrix use Gaussian method
+	 * fill this matrix use Gaussian method
 	 * 
 	 * @param col
 	 * @param row
 	 * @return
 	 */
-	public abstract T randomGaussian(int col, int row, double mean, double sigma);
+	public abstract T randomGaussianFill(double mean, double sigma, boolean dup);
 
 	/**
-	 * generate a row*col matrix use Uniform method[a,b)
+	 * fill this matrix use Uniform method[a,b)
 	 * 
 	 * @param col
 	 * @param row
@@ -266,7 +257,7 @@ public abstract class Matrix<T> {
 	 * @param b
 	 * @return
 	 */
-	public abstract T randomUniform(int col, int row, double a, double b);
+	public abstract T randomUniformFill(double a, double b, boolean dup);
 
 	/**
 	 * get the elment in

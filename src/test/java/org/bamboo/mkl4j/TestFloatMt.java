@@ -24,10 +24,10 @@ public class TestFloatMt {
 		System.out.println(m.getRow(1));
 		System.out.println(m.getCol(2));
 		System.out.println("----------------5------------------");
-		System.out.println(m.add(2.0f, m.zeroLikeThis()));
+		System.out.println(m.add(2.0f, m.numFill(0, true)));
 		System.out.println(m);
 		System.out.println(
-				m.addRowVector(new FloatMatrix(1, 4, new float[] { 2.0f, 2.3f, 1.2f, 6.5f }), m.zeroLikeThis()));
+				m.addRowVector(new FloatMatrix(1, 4, new float[] { 2.0f, 2.3f, 1.2f, 6.5f }), m.numFill(0, true)));
 		System.out.println(m);
 		System.out.println("++++++++++++++++6+++++++++++++++++++++++");
 
@@ -37,7 +37,7 @@ public class TestFloatMt {
 		System.out.println(m1);
 		System.out.println("-------------------7----------------");
 		System.out.println(m);
-		System.out.println(m.tanh(m.zeroLikeThis()));
+		System.out.println(m.tanh(m.numFill(0, true)));
 		System.out.println(m);
 		System.out.println("++++++++++8++++++++");
 		float[][] c = new float[][] { { 2, 3 }, { 5, 6 }, { 6, 3 }, { 8, 9 } };
@@ -53,8 +53,10 @@ public class TestFloatMt {
 		System.out.println("**************10****************");
 		System.out.println(m.sum('r'));
 		System.out.println(m.sum('c'));
-		System.out.println(m.randomGaussian(6, 5, 6, 2));
-		System.out.println(m.randomUniform(3, 4, 0, 10));
+		System.out.println("-------------random gen---------------");
+		System.out.println(m.numFill(2.0, true));
+		System.out.println(m.randomGaussianFill(6, 2, true));
+		System.out.println(m.randomUniformFill(0, 10, true));
 
 	}
 

@@ -31,139 +31,243 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 
 	@Override
 	public DoubleMatrix transpose() {
-		// TODO Auto-generated method stub
-		return null;
+		DoubleMatrix o = new DoubleMatrix(this.rows, this.columns);
+		for (int i = 0; i < o.columns; i++)
+			MKL.vdCopy(o.rows, this.data, i, this.rows, o.data, o.rows * i, 1);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix getRange(int rs, int re, int cs, int ce) {
-		// TODO Auto-generated method stub
-		return null;
+		DoubleMatrix o = new DoubleMatrix(ce - cs, re - rs);
+		for (int i = 0; i < o.columns; i++)
+			System.arraycopy(data, rs + (cs + i) * this.rows, o.data, o.rows * i, o.rows);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix dup() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DoubleMatrix(columns, rows, Arrays.copyOf(data, data.length));
 	}
 
 	@Override
 	public DoubleMatrix getRow(int row) {
-		// TODO Auto-generated method stub
-		return null;
+		if (row < 0 || row >= this.rows)
+			throw new RuntimeException("index=" + row + " out of row=" + this.rows);
+
+		DoubleMatrix m = new DoubleMatrix(columns, 1);
+		MKL.vdCopy(columns, data, row, rows, m.data, 0, 1);
+		return m;
 	}
 
 	@Override
-	public DoubleMatrix getCol(int column) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DoubleMatrix zeroLikeThis() {
-		// TODO Auto-generated method stub
-		return null;
+	public DoubleMatrix getCol(int i) {
+		if (i < 0 || i >= this.columns)
+			throw new RuntimeException("index=" + i + " out of col=" + this.columns);
+		DoubleMatrix m = new DoubleMatrix(rows, 1);
+		System.arraycopy(data, i * this.rows, m.data, 0, this.rows);
+		return m;
 	}
 
 	@Override
 	public DoubleMatrix tanh(DoubleMatrix out) {
-		// TODO Auto-generated method stub
-		return null;
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vdTanh(this.data.length, this.data, 0, out.data, 0);
+		return out;
 	}
 
 	@Override
 	public DoubleMatrix exp(DoubleMatrix out) {
-		// TODO Auto-generated method stub
-		return null;
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vdExp(this.data.length, this.data, 0, out.data, 0);
+		return out;
 	}
 
 	@Override
 	public DoubleMatrix add(DoubleMatrix b, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+		MKL.vdAdd(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix addRowVector(DoubleMatrix blas, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		if (blas.columns != 1 && blas.rows != 1)
+			throw new RuntimeException(" matrix a must be a rank 1 vecctor");
+		int size = Math.max(blas.columns, blas.rows);
+		if (size != this.columns)
+			throw new RuntimeException("matrix row size must eq vector size");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		if (o != this) // copy ori data
+			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+		for (int i = 0; i < this.rows; i++)// add vector
+			MKL.vdaxpy(this.columns, 1.0f, blas.data, 0, 1, o.data, i, o.rows);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix add(double scale, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		for (int i = 0; i < o.data.length; i++)
+			o.data[i] = this.data[i] + scale;
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix sub(DoubleMatrix b, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+
+		MKL.vdSub(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix mul(DoubleMatrix b, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+		MKL.vdMul(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix mul(double sc, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		if (o == this) {
+			MKL.vdscal(this.data.length, sc, this.data, 0, 1);
+			return o;
+		}
+		MKL.vdaxpy(this.data.length, sc, this.data, 0, 1, o.data, 0, 1);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix div(DoubleMatrix b, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+		MKL.vdDiv(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
 	}
 
 	@Override
 	public DoubleMatrix div(double sc, DoubleMatrix o) {
-		// TODO Auto-generated method stub
-		return null;
+		return mul(1.0 / sc, o);
 	}
 
 	@Override
 	public DoubleMatrix nrm2(char dim) {
-		// TODO Auto-generated method stub
-		return null;
+		if (dim == 'r') {
+			double[] res = new double[rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = MKL.vdNrm2(columns, data, i, rows);
+			return new DoubleMatrix(1, rows, res);
+		}
+		double[] res = new double[columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = MKL.vdNrm2(rows, data, i * rows, 1);
+		return new DoubleMatrix(columns, 1, res);
 	}
 
 	@Override
 	public int[] argMax(char dim) {
-		// TODO Auto-generated method stub
-		return null;
+		if (dim == 'r') {
+			int[] res = new int[rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = MKL.vdAmax(columns, data, i, rows);
+			return res;
+		}
+
+		int[] res = new int[columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = MKL.vdAmax(rows, data, i * rows, 1);
+		return res;
 	}
 
 	@Override
 	public int[] argMin(char dim) {
-		// TODO Auto-generated method stub
-		return null;
+		if (dim == 'r') {
+			int[] res = new int[rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = MKL.vdAmin(columns, data, i, rows);
+			return res;
+		}
+		int[] res = new int[columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = MKL.vdAmin(rows, data, i * rows, 1);
+		return res;
 	}
 
 	@Override
 	public DoubleMatrix mmul(DoubleMatrix b, boolean transA, boolean transB, double alpha) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!transA) {
+			if (!transB) {
+				if (this.columns != b.rows)
+					throw new RuntimeException(" a.col=" + this.columns + " not eq b.row=" + b.rows);
+				DoubleMatrix o = new DoubleMatrix(b.columns, this.rows);
+				MKL.vdgemm('n', 'n', o.rows, o.columns, this.columns, (float) alpha, this.data, 0, this.rows, b.data, 0,
+						b.rows, 0.0f, o.data, 0, o.rows);
+				return o;
+			}
+
+			if (this.columns != b.columns)
+				throw new RuntimeException(" a.col=" + this.columns + " not eq b.col=" + b.columns);
+			DoubleMatrix o = new DoubleMatrix(b.rows, this.rows);
+			MKL.vdgemm('n', 't', o.rows, o.columns, this.columns, (float) alpha, this.data, 0, this.rows, b.data, 0,
+					b.rows, 0.0f, o.data, 0, o.rows);
+			return o;
+		}
+
+		if (!transB) {
+			if (this.rows != b.rows)
+				throw new RuntimeException(" a.row=" + this.rows + " not eq b.row=" + b.rows);
+			DoubleMatrix o = new DoubleMatrix(b.columns, this.columns);
+			MKL.vdgemm('t', 'n', o.rows, o.columns, this.rows, (float) alpha, this.data, 0, this.rows, b.data, 0,
+					b.rows, 0.0f, o.data, 0, o.rows);
+			return o;
+		}
+
+		if (this.rows != b.columns)
+			throw new RuntimeException(" a.row=" + this.rows + " not eq b.col=" + b.columns);
+		DoubleMatrix o = new DoubleMatrix(b.rows, this.columns);
+		MKL.vdgemm('t', 't', o.rows, o.columns, this.rows, (float) alpha, this.data, 0, this.rows, b.data, 0, b.rows,
+				0.0f, o.data, 0, o.rows);
+		return o;
 	}
 
 	@Override
 	public double vdot(DoubleMatrix b) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (this.columns != 1 && this.rows != 1)
+			throw new RuntimeException(" matrix a must be a rank 1 vecctor");
+		if (b.columns != 1 && b.rows != 1)
+			throw new RuntimeException(" matrix b must be a rank 1 vecctor");
+		int size = Math.max(this.columns, this.rows);
+		if (size != Math.max(b.columns, b.rows))
+			throw new RuntimeException("matrix must be same size");
+		return MKL.vddot(size, this.data, 0, 1, b.data, 0, 1);
 	}
 
 	@Override
 	public DoubleMatrix concatColumn(DoubleMatrix y) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DoubleMatrix zeros(int col, int rows) {
-		return new DoubleMatrix(col, rows);
+		if (this.rows != y.rows)
+			throw new RuntimeException("matrix x.row=" + this.rows + " not eq y.row=" + y.rows);
+		DoubleMatrix m = new DoubleMatrix(this.columns + y.columns, this.rows);
+		System.arraycopy(this.data, 0, m.data, 0, this.data.length);
+		System.arraycopy(y.data, 0, m.data, this.data.length, y.data.length);
+		return m;
 	}
 
 	@Override
@@ -211,21 +315,34 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 	}
 
 	@Override
-	public DoubleMatrix randomGaussian(int col, int row, double mean, double sigma) {
-		if (sigma <= 0)
-			throw new RuntimeException("sigma=" + sigma + " must be right!");
-		double[] m = new double[col * row];
-		MKL.vdRngGaussian(m.length, m, 0, mean, sigma);
-		return new DoubleMatrix(col, row, m);
+	public DoubleMatrix numFill(double number, boolean dup) {
+		DoubleMatrix m = this;
+		if (dup)
+			m = new DoubleMatrix(this.columns, this.rows);
+		Arrays.fill(m.data, number);
+		return m;
 	}
 
 	@Override
-	public DoubleMatrix randomUniform(int col, int row, double a, double b) {
+	public DoubleMatrix randomGaussianFill(double mean, double sigma, boolean dup) {
+		if (sigma <= 0)
+			throw new RuntimeException("sigma=" + sigma + " must be right!");
+		DoubleMatrix m = this;
+		if (dup)
+			m = new DoubleMatrix(this.columns, this.rows);
+		MKL.vdRngGaussian(m.data.length, m.data, 0, mean, sigma);
+		return m;
+	}
+
+	@Override
+	public DoubleMatrix randomUniformFill(double a, double b, boolean dup) {
 		if (a >= b)
 			throw new RuntimeException("a<b needed!");
-		double[] m = new double[col * row];
-		MKL.vdRngUniform(m.length, m, 0, a, b);
-		return new DoubleMatrix(col, row, m);
+		DoubleMatrix m = this;
+		if (dup)
+			m = new DoubleMatrix(this.columns, this.rows);
+		MKL.vdRngUniform(m.data.length, m.data, 0, a, b);
+		return m;
 	}
 
 }
