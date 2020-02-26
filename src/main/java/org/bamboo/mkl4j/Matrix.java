@@ -104,6 +104,39 @@ public abstract class Matrix<T> {
 	 * @param out
 	 */
 	public abstract T exp(T out);
+	
+	/**
+	 * o=this+b
+	 * 
+	 * @param a
+	 * @param b
+	 * @param o
+	 */
+	public abstract T maxE(T b, T o);
+	
+	
+	
+	/**
+	 * o=this+b
+	 * 
+	 * @param a
+	 * @param b
+	 * @param o
+	 */
+	public abstract T minE(T b, T o);
+	
+	
+	
+	/**
+	 * o=this+b
+	 * 
+	 * @param a
+	 * @param b
+	 * @param o
+	 */
+	public abstract T absmaxE(T b, T o);
+	
+	
 
 	/**
 	 * o=this+b

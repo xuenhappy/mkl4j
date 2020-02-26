@@ -93,6 +93,41 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		MKL.vdFmax(this.data.length, this.data, 0, zeros, 0, out.data, 0);
 		return out;
 	}
+	
+	
+
+	@Override
+	public DoubleMatrix maxE(DoubleMatrix b, DoubleMatrix o) {
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+
+		MKL.vdFmax(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+
+	@Override
+	public DoubleMatrix minE(DoubleMatrix b, DoubleMatrix o) {
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+
+		MKL.vdFmin(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+
+	@Override
+	public DoubleMatrix absmaxE(DoubleMatrix b, DoubleMatrix o) {
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+
+		MKL.vdMaxMag(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
 
 	@Override
 	public DoubleMatrix add(DoubleMatrix b, DoubleMatrix o) {

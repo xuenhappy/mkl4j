@@ -198,6 +198,43 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 			MKL.vsaxpy(this.columns, 1.0f, blas.data, 0, 1, o.data, i, o.rows);
 		return o;
 	}
+	
+	
+	@Override
+	public FloatMatrix maxE(FloatMatrix b, FloatMatrix o) {
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+
+		MKL.vsFmax(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+
+	@Override
+	public FloatMatrix minE(FloatMatrix b, FloatMatrix o) {
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+
+		MKL.vsFmin(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+
+	@Override
+	public FloatMatrix absmaxE(FloatMatrix b, FloatMatrix o) {
+		if (this.columns != b.columns || this.rows != b.rows)
+			throw new RuntimeException("a and b matrix size must be same");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+
+		MKL.vsMaxMag(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+	
+	
+	
 
 	/**
 	 * o=this+scale
@@ -538,5 +575,7 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsRngUniform(m.data.length, m.data, 0, (float) a, (float) b);
 		return m;
 	}
+
+	
 
 }
