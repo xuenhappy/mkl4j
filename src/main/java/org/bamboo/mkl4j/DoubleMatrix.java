@@ -64,7 +64,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 	public DoubleMatrix getCol(int i) {
 		if (i < 0 || i >= this.columns)
 			throw new RuntimeException("index=" + i + " out of col=" + this.columns);
-		DoubleMatrix m = new DoubleMatrix(1,rows);
+		DoubleMatrix m = new DoubleMatrix(1, rows);
 		System.arraycopy(data, i * this.rows, m.data, 0, this.rows);
 		return m;
 	}
@@ -82,6 +82,15 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		if (out.columns != this.columns || this.rows != out.rows)
 			throw new RuntimeException("out matrix size must eq val size");
 		MKL.vdExp(this.data.length, this.data, 0, out.data, 0);
+		return out;
+	}
+
+	@Override
+	public DoubleMatrix relu(DoubleMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		double[] zeros = new double[this.data.length];
+		MKL.vdFmax(this.data.length, this.data, 0, zeros, 0, out.data, 0);
 		return out;
 	}
 

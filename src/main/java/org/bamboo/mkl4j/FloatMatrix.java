@@ -153,6 +153,15 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return out;
 	}
 
+	@Override
+	public FloatMatrix relu(FloatMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		float[] zeros = new float[this.data.length];
+		MKL.vsFmax(this.data.length, this.data, 0, zeros, 0, out.data, 0);
+		return out;
+	}
+
 	/**
 	 * o=this+b
 	 * 

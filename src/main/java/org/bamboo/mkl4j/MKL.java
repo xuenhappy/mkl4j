@@ -437,6 +437,55 @@ public class MKL {
 
 	public native static void vdDiv(int n, double[] a, int aOffset, double[] b, int bOffset, double[] y, int yOffset);
 
+	/**
+	 * Returns the larger of each pair of elements of the two vector arguments.
+	 * 
+	 * @param n
+	 * @param a
+	 * @param aOffset
+	 * @param b
+	 * @param bOffset
+	 * @param y
+	 * @param yOffset
+	 */
+	public native static void vsFmax(int n, float[] a, int aOffset, float[] b, int bOffset, float[] y, int yOffset);
+
+	public native static void vdFmax(int n, double[] a, int aOffset, double[] b, int bOffset, double[] y, int yOffset);
+
+	/**
+	 * Returns the smaller of each pair of elements of the two vector arguments
+	 * 
+	 * @param n
+	 * @param a
+	 * @param aOffset
+	 * @param b
+	 * @param bOffset
+	 * @param y
+	 * @param yOffset
+	 */
+	public native static void vsFmin(int n, float[] a, int aOffset, float[] b, int bOffset, float[] y, int yOffset);
+
+	public native static void vdFmin(int n, double[] a, int aOffset, double[] b, int bOffset, double[] y, int yOffset);
+
+	/**
+	 * The v?MaxMag function returns a vector with element values equal to the
+	 * element with the larger magnitude from each pair of corresponding elements of
+	 * the two vectors a and b: • If |ai| > |bi| v?MaxMag returns ai, otherwise
+	 * v?MaxMag returns ai. • If |bi| > |ai| v?MaxMag returns bi, otherwise v?MaxMag
+	 * returns ai. • Otherwise v?MaxMag behaves like v?Fmax.
+	 * 
+	 * @param n
+	 * @param a
+	 * @param aOffset
+	 * @param b
+	 * @param bOffset
+	 * @param y
+	 * @param yOffset
+	 */
+	public native static void vsMaxMag(int n, float[] a, int aOffset, float[] b, int bOffset, float[] y, int yOffset);
+
+	public native static void vdMaxMag(int n, double[] a, int aOffset, double[] b, int bOffset, double[] y, int yOffset);
+
 	public native static void vsPowx(int n, float[] a, int aOffset, float b, float[] y, int yOffset);
 
 	public native static void vdPowx(int n, double[] a, int aOffset, double b, double[] y, int yOffset);

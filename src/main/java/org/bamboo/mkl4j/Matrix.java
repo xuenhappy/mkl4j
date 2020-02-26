@@ -89,6 +89,14 @@ public abstract class Matrix<T> {
 	 * @param out
 	 */
 	public abstract T tanh(T out);
+	
+	/**
+	 * relu func
+	 * @param out
+	 * @return
+	 */
+	public abstract T relu(T out);
+	
 
 	/**
 	 * 

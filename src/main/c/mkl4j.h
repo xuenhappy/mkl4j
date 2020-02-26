@@ -237,6 +237,54 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdDiv
 
 /*
  * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsFmax
+ * Signature: (I[FI[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsFmax
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jfloatArray, jint, jfloatArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdFmax
+ * Signature: (I[DI[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdFmax
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jdoubleArray, jint, jdoubleArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsFmin
+ * Signature: (I[FI[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsFmin
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jfloatArray, jint, jfloatArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdFmin
+ * Signature: (I[DI[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdFmin
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jdoubleArray, jint, jdoubleArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsMaxMag
+ * Signature: (I[FI[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsMaxMag
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jfloatArray, jint, jfloatArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdMaxMag
+ * Signature: (I[DI[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdMaxMag
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jdoubleArray, jint, jdoubleArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
  * Method:    vsPowx
  * Signature: (I[FIF[FI)V
  */

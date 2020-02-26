@@ -34,14 +34,15 @@ public class TestFloatMt {
 		FloatMatrix n = new FloatMatrix(new float[][] { { 2, 3 }, { 5, 6 }, { 6, 3 }, { 8, 9 } });
 		System.out.println("matrix dot matrix:" + n);
 		System.out.println("result:" + m.mmul(n, false, false, 1.0f));
-		float[][] c1 = new float[][] { { 2, 5 }, { 6, 8 } };
-		FloatMatrix n1 = new FloatMatrix(c1);
+		FloatMatrix n1 = new FloatMatrix(new float[][] { { 2, 5 }, { 6, 8 } });
 		System.out.println("ori matrix:" + m);
 		System.out.println("dot matrix:" + n1);
 		System.out.println("trans A dot:" + m.mmul(n1, true, false, 1.0f));
 		System.out.println("-------------------math op----------------");
 		System.out.println("ori matrix:" + m);
 		System.out.println("tanh result:" + m.tanh(m.numFill(0, true)));
+		FloatMatrix k=new FloatMatrix(new float[][] { { 2, 5 }, { 6, -8 } });
+		System.out.println(k.relu(k));
 		System.out.println("-------------random gen op---------------");
 		System.out.println("fill number:" + m.numFill(2.0, true));
 		System.out.println("guass random:" + m.randomGaussianFill(6, 2, true));
