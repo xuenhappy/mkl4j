@@ -217,6 +217,58 @@ public class MKL {
 	// }} mkl environments set up
 
 	/**
+	 * The vRngUniform function generates random numbers uniformly distributed over
+	 * the interval [a, b), where a, b are the left and right bounds of the
+	 * interval, respectively, and a, b∈R ; a < b.
+	 * 
+	 * @param n
+	 * @param r
+	 * @param rOffset
+	 * @param a
+	 * @param b
+	 */
+	public native static void vsRngUniform(int n, float[] r, int rOffset, float a, float b);
+
+	/**
+	 * The vRngUniform function generates random numbers uniformly distributed over
+	 * the interval [a, b), where a, b are the left and right bounds of the
+	 * interval, respectively, and a, b∈R ; a < b.
+	 * 
+	 * @param n
+	 * @param r
+	 * @param rOffset
+	 * @param a
+	 * @param b
+	 */
+	public native static void vdRngUniform(int n, double[] r, int rOffset, double a, double b);
+
+	/**
+	 * The vRngGaussian function generates random numbers with normal (Gaussian)
+	 * distribution with mean value a and standard deviation σ, where a, σ∈R ; σ >
+	 * 0.
+	 * 
+	 * @param n
+	 * @param r
+	 * @param rOffset
+	 * @param a
+	 * @param sigma
+	 */
+	public native static void vsRngGaussian(int n, float[] r, int rOffset, float a, float sigma);
+
+	/**
+	 * The vRngGaussian function generates random numbers with normal (Gaussian)
+	 * distribution with mean value a and standard deviation σ, where a, σ∈R ; σ >
+	 * 0.
+	 * 
+	 * @param n
+	 * @param r
+	 * @param rOffset
+	 * @param a
+	 * @param sigma
+	 */
+	public native static void vdRngGaussian(int n, double[] r, int rOffset, double a, double sigma);
+
+	/**
 	 * swap x and y
 	 * 
 	 * @param n

@@ -3,6 +3,7 @@ package org.bamboo.mkl4j;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * this is a double Matrix
@@ -195,8 +196,36 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 
 	@Override
 	public DoubleMatrix sum(char dim) {
-		// TODO Auto-generated method stub
-		return null;
+		if (dim == 'r') {
+			double[] res = new double[rows];
+			double[] op = new double[columns];
+			Arrays.fill(op, 1);
+			MKL.vdgemv('n', rows, columns, 1.0f, this.data, 0, this.rows, op, 0, 1, 0, res, 0, 1);
+			return new DoubleMatrix(1, rows, res);
+		}
+		double[] res = new double[columns];
+		double[] op = new double[rows];
+		Arrays.fill(op, 1);
+		MKL.vdgemv('t', rows, columns, 1.0f, this.data, 0, this.rows, op, 0, 1, 0, res, 0, 1);
+		return new DoubleMatrix(columns, 1, res);
+	}
+
+	@Override
+	public DoubleMatrix randomGaussian(int col, int row, double mean, double sigma) {
+		if (sigma <= 0)
+			throw new RuntimeException("sigma=" + sigma + " must be right!");
+		double[] m = new double[col * row];
+		MKL.vdRngGaussian(m.length, m, 0, mean, sigma);
+		return new DoubleMatrix(col, row, m);
+	}
+
+	@Override
+	public DoubleMatrix randomUniform(int col, int row, double a, double b) {
+		if (a >= b)
+			throw new RuntimeException("a<b needed!");
+		double[] m = new double[col * row];
+		MKL.vdRngUniform(m.length, m, 0, a, b);
+		return new DoubleMatrix(col, row, m);
 	}
 
 }

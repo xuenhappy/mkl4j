@@ -1,6 +1,8 @@
 #include "mkl4j.h"
 #include <omp.h>
 #include <mkl.h>
+#include <time.h>
+#include <mkl_vsl.h>
 
 JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_setNumThreads(JNIEnv *env,
 		jclass cls, jint num_threads) {
@@ -51,6 +53,78 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_waitPolicy(JNIEnv *env,
 JNIEXPORT jint JNICALL Java_org_bamboo_mkl4j_MKL_getNumThreads(JNIEnv *env,
 		jclass cls) {
 	return omp_get_num_threads();
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsRngUniform
+ * Signature: (I[FIFF)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsRngUniform(JNIEnv *env,
+		jclass cls, jint n, jfloatArray r, jint rOffset, jfloat a, jfloat b) {
+	jfloat *jni_r = (*env)->GetPrimitiveArrayCritical(env, r, JNI_FALSE);
+	VSLStreamStatePtr stream;
+	vslNewStream(&stream, VSL_BRNG_MT19937, time(NULL));
+	/* Generating */
+	vsRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, n, jni_r + rOffset, a,
+			b);
+	/* Deleting the stream */
+	vslDeleteStream(&stream);
+	(*env)->ReleasePrimitiveArrayCritical(env, r, jni_r, 0);
+
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdRngUniform
+ * Signature: (I[DIDD)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdRngUniform(JNIEnv *env,
+		jclass cls, jint n, jdoubleArray r, jint rOffset, jdouble a, jdouble b) {
+	jdouble *jni_r = (*env)->GetPrimitiveArrayCritical(env, r, JNI_FALSE);
+	/* Initializing */
+	VSLStreamStatePtr stream;
+	vslNewStream(&stream, VSL_BRNG_MT19937, time(NULL));
+	/* Generating */
+	vdRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, n, jni_r + rOffset, a,
+			b);
+	/* Deleting the stream */
+	vslDeleteStream(&stream);
+	(*env)->ReleasePrimitiveArrayCritical(env, r, jni_r, 0);
+
+}
+
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsRngGaussian(JNIEnv *env,
+		jclass cls, jint n, jfloatArray r, jint rOffset, jfloat a, jfloat sigma) {
+	jfloat *jni_r = (*env)->GetPrimitiveArrayCritical(env, r, JNI_FALSE);
+	VSLStreamStatePtr stream;
+	vslNewStream(&stream, VSL_BRNG_MT19937, time(NULL));
+	/* Generating */
+	vsRngGaussian( VSL_RNG_METHOD_GAUSSIAN_ICDF, stream, n, jni_r + rOffset, a,
+			sigma);
+	/* Deleting the stream */
+	vslDeleteStream(&stream);
+	(*env)->ReleasePrimitiveArrayCritical(env, r, jni_r, 0);
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdRngGaussian
+ * Signature: (I[DIDD)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdRngGaussian(JNIEnv *env,
+		jclass cls, jint n, jdoubleArray r, jint rOffset, jdouble a,
+		jdouble sigma) {
+	jdouble *jni_r = (*env)->GetPrimitiveArrayCritical(env, r, JNI_FALSE);
+	/* Initializing */
+	VSLStreamStatePtr stream;
+	vslNewStream(&stream, VSL_BRNG_MT19937, time(NULL));
+	/* Generating */
+	vdRngGaussian( VSL_RNG_METHOD_GAUSSIAN_ICDF, stream, n, jni_r + rOffset, a,
+			sigma);
+	/* Deleting the stream */
+	vslDeleteStream(&stream);
+	(*env)->ReleasePrimitiveArrayCritical(env, r, jni_r, 0);
 }
 
 /*

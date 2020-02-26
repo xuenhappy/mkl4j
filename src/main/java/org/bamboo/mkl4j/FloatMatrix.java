@@ -514,4 +514,22 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return new FloatMatrix(columns, 1, res);
 	}
 
+	@Override
+	public FloatMatrix randomGaussian(int col, int row, double mean, double sigma) {
+		if (sigma <= 0)
+			throw new RuntimeException("sigma=" + sigma + " must be right!");
+		float[] m = new float[col * row];
+		MKL.vsRngGaussian(m.length, m, 0, (float) mean, (float) sigma);
+		return new FloatMatrix(col, row, m);
+	}
+
+	@Override
+	public FloatMatrix randomUniform(int col, int row, double a, double b) {
+		if (a >= b)
+			throw new RuntimeException("a<b needed!");
+		float[] m = new float[col * row];
+		MKL.vsRngUniform(m.length, m, 0, (float) a, (float) b);
+		return new FloatMatrix(col, row, m);
+	}
+
 }

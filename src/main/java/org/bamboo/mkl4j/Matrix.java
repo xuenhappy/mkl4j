@@ -27,6 +27,8 @@ public abstract class Matrix<T> {
 	 * @param h
 	 */
 	public Matrix(int w, int h) {
+		if (w <= 0 || h <= 0)
+			throw new RuntimeException(" w and h must be right number!");
 		this.columns = w;
 		this.rows = h;
 	}
@@ -103,8 +105,6 @@ public abstract class Matrix<T> {
 	 * @param out
 	 */
 	public abstract T exp(T out);
-	
-	
 
 	/**
 	 * o=this+b
@@ -176,15 +176,14 @@ public abstract class Matrix<T> {
 	 * @param o
 	 */
 	public abstract T div(double sc, T o);
-	
 
 	/**
-	 * sum of along  row or column dim
+	 * sum of along row or column dim
+	 * 
 	 * @param dim 'r' along row ,'c' along column
 	 * @return
 	 */
 	public abstract T sum(char dim);
-	
 
 	/**
 	 * cal this nrm of the matrix
@@ -250,6 +249,26 @@ public abstract class Matrix<T> {
 	public abstract T zeros(int col, int rows);
 
 	/**
+	 * gen a matrix use Gaussian method
+	 * 
+	 * @param col
+	 * @param row
+	 * @return
+	 */
+	public abstract T randomGaussian(int col, int row, double mean, double sigma);
+
+	/**
+	 * generate a row*col matrix use Uniform method[a,b)
+	 * 
+	 * @param col
+	 * @param row
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public abstract T randomUniform(int col, int row, double a, double b);
+
+	/**
 	 * get the elment in
 	 * 
 	 * @param i
@@ -280,7 +299,7 @@ public abstract class Matrix<T> {
 					skipc = true;
 					buf.append("....,");
 				}
-				buf.append(getElement(i, j)).append(",");
+				buf.append(String.format("%g", getElement(i, j))).append(",");
 			}
 			if (this.columns > 0)
 				buf.setLength(buf.length() - 1);
@@ -290,15 +309,18 @@ public abstract class Matrix<T> {
 			buf.setLength(buf.length() - 1);
 		return buf.toString();
 	}
-	
+
 	/**
-	 * load  the data from inputstream
+	 * load the data from inputstream
+	 * 
 	 * @param in
 	 * @throws IOException
 	 */
 	public abstract T load(DataInputStream in) throws IOException;
+
 	/**
-	 * save this to stream 
+	 * save this to stream
+	 * 
 	 * @param out
 	 * @throws IOException
 	 */

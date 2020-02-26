@@ -53,6 +53,8 @@ public class TestFloatMt {
 		System.out.println("**************10****************");
 		System.out.println(m.sum('r'));
 		System.out.println(m.sum('c'));
+		System.out.println(m.randomGaussian(6, 5, 6, 2));
+		System.out.println(m.randomUniform(3, 4, 0, 10));
 
 	}
 

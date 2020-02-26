@@ -45,6 +45,38 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_waitPolicy
 
 /*
  * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsRngUniform
+ * Signature: (I[FIFF)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsRngUniform
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jfloat, jfloat);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdRngUniform
+ * Signature: (I[DIDD)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdRngUniform
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jdouble, jdouble);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsRngGaussian
+ * Signature: (I[FIFF)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsRngGaussian
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jfloat, jfloat);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdRngGaussian
+ * Signature: (I[DIDD)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdRngGaussian
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jdouble, jdouble);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
  * Method:    vsSwap
  * Signature: (I[FII[FII)V
  */
