@@ -119,7 +119,7 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	public FloatMatrix getCol(int i) {
 		if (i < 0 || i >= this.columns)
 			throw new RuntimeException("index=" + i + " out of col=" + this.columns);
-		FloatMatrix m = new FloatMatrix(rows, 1);
+		FloatMatrix m = new FloatMatrix(1, rows);
 		System.arraycopy(data, i * this.rows, m.data, 0, this.rows);
 		return m;
 	}

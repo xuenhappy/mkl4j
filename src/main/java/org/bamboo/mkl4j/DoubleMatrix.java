@@ -64,7 +64,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 	public DoubleMatrix getCol(int i) {
 		if (i < 0 || i >= this.columns)
 			throw new RuntimeException("index=" + i + " out of col=" + this.columns);
-		DoubleMatrix m = new DoubleMatrix(rows, 1);
+		DoubleMatrix m = new DoubleMatrix(1,rows);
 		System.arraycopy(data, i * this.rows, m.data, 0, this.rows);
 		return m;
 	}
