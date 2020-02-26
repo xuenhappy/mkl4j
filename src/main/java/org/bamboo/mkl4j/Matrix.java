@@ -106,7 +106,7 @@ public abstract class Matrix<T> {
 	public abstract T exp(T out);
 	
 	/**
-	 * o=this+b
+	 * o=max(this,b)
 	 * 
 	 * @param a
 	 * @param b
@@ -117,7 +117,7 @@ public abstract class Matrix<T> {
 	
 	
 	/**
-	 * o=this+b
+	 * o=min(this,b)
 	 * 
 	 * @param a
 	 * @param b
@@ -128,7 +128,7 @@ public abstract class Matrix<T> {
 	
 	
 	/**
-	 * o=this+b
+	 * o=max(|this|,|b|)
 	 * 
 	 * @param a
 	 * @param b
