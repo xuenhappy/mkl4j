@@ -66,8 +66,7 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsRngUniform(JNIEnv *env,
 	VSLStreamStatePtr stream;
 	vslNewStream(&stream, VSL_BRNG_MT19937, time(NULL));
 	/* Generating */
-	vsRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, n, jni_r + rOffset, a,
-			b);
+	vsRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, n, jni_r + rOffset, a, b);
 	/* Deleting the stream */
 	vslDeleteStream(&stream);
 	(*env)->ReleasePrimitiveArrayCritical(env, r, jni_r, 0);
@@ -86,8 +85,7 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdRngUniform(JNIEnv *env,
 	VSLStreamStatePtr stream;
 	vslNewStream(&stream, VSL_BRNG_MT19937, time(NULL));
 	/* Generating */
-	vdRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, n, jni_r + rOffset, a,
-			b);
+	vdRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, n, jni_r + rOffset, a, b);
 	/* Deleting the stream */
 	vslDeleteStream(&stream);
 	(*env)->ReleasePrimitiveArrayCritical(env, r, jni_r, 0);
@@ -447,8 +445,8 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsDiv(JNIEnv *env, jclass cls,
  * Signature: (I[DI[DI[DI)V
  */
 JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdDiv(JNIEnv *env, jclass cls,
-		jint n, jfloatArray a, jint aOffset, jfloatArray b, jint bOffset,
-		jfloatArray y, jint yOffset) {
+		jint n, jdoubleArray a, jint aOffset, jdoubleArray b, jint bOffset,
+		jdoubleArray y, jint yOffset) {
 
 	jdouble *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
 	jdouble *jni_b = (*env)->GetPrimitiveArrayCritical(env, b, JNI_FALSE);
@@ -459,6 +457,126 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdDiv(JNIEnv *env, jclass cls,
 	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
 	(*env)->ReleasePrimitiveArrayCritical(env, b, jni_b, 0);
 	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsFmax
+ * Signature: (I[FI[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsFmax(JNIEnv *env, jclass cls,
+		jint n, jfloatArray a, jint aOffset, jfloatArray b, jint bOffset,
+		jfloatArray y, jint yOffset) {
+	jfloat *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jfloat *jni_b = (*env)->GetPrimitiveArrayCritical(env, b, JNI_FALSE);
+	jfloat *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+
+	vsFmax(n, jni_a + aOffset, jni_b + bOffset, jni_y + yOffset);
+
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, b, jni_b, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdFmax
+ * Signature: (I[DI[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdFmax(JNIEnv *env, jclass cls,
+		jint n, jdoubleArray a, jint aOffset, jdoubleArray b, jint bOffset,
+		jdoubleArray y, jint yOffset) {
+	jdouble *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jdouble *jni_b = (*env)->GetPrimitiveArrayCritical(env, b, JNI_FALSE);
+	jdouble *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+
+	vdFmax(n, jni_a + aOffset, jni_b + bOffset, jni_y + yOffset);
+
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, b, jni_b, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsFmin
+ * Signature: (I[FI[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsFmin(JNIEnv *env, jclass cls,
+		jint n, jfloatArray a, jint aOffset, jfloatArray b, jint bOffset,
+		jfloatArray y, jint yOffset) {
+	jfloat *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jfloat *jni_b = (*env)->GetPrimitiveArrayCritical(env, b, JNI_FALSE);
+	jfloat *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+
+	vsFmin(n, jni_a + aOffset, jni_b + bOffset, jni_y + yOffset);
+
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, b, jni_b, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdFmin
+ * Signature: (I[DI[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdFmin(JNIEnv *env, jclass cls,
+		jint n, jdoubleArray a, jint aOffset, jdoubleArray b, jint bOffset,
+		jdoubleArray y, jint yOffset) {
+	jdouble *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jdouble *jni_b = (*env)->GetPrimitiveArrayCritical(env, b, JNI_FALSE);
+	jdouble *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+
+	vdFmin(n, jni_a + aOffset, jni_b + bOffset, jni_y + yOffset);
+
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, b, jni_b, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsMaxMag
+ * Signature: (I[FI[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsMaxMag(JNIEnv *env,
+		jclass cls, jint n, jfloatArray a, jint aOffset, jfloatArray b,
+		jint bOffset, jfloatArray y, jint yOffset) {
+	jfloat *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jfloat *jni_b = (*env)->GetPrimitiveArrayCritical(env, b, JNI_FALSE);
+	jfloat *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+
+	vsMaxMag(n, jni_a + aOffset, jni_b + bOffset, jni_y + yOffset);
+
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, b, jni_b, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdMaxMag
+ * Signature: (I[DI[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdMaxMag(JNIEnv *env,
+		jclass cls, jint n, jdoubleArray a, jint aOffset, jdoubleArray b,
+		jint bOffset, jdoubleArray y, jint yOffset) {
+	jdouble *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jdouble *jni_b = (*env)->GetPrimitiveArrayCritical(env, b, JNI_FALSE);
+	jdouble *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+
+	vdMaxMag(n, jni_a + aOffset, jni_b + bOffset, jni_y + yOffset);
+
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, b, jni_b, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+
 }
 
 /*
