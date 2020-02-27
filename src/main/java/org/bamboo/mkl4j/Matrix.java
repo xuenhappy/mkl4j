@@ -127,6 +127,28 @@ public abstract class Matrix<T> {
 	
 	
 	
+	
+	/**
+	 * the max value every row or column
+	 * 
+	 * @param a
+	 * @param dim 'r' along row ,'c' along column
+	 * @return
+	 */
+	public abstract T maxE(char dim);
+
+	/**
+	 * the min value every row or column
+	 * 
+	 * @param a
+	 * @param dim 'r' along row ,'c' along column
+	 * @return
+	 */
+	public abstract T minE(char dim);
+	
+	
+	
+	
 	/**
 	 * o=max(|this|,|b|)
 	 * 
@@ -251,6 +273,11 @@ public abstract class Matrix<T> {
 	 * @return
 	 */
 	public abstract int[] argMin(char dim);
+	
+	
+	
+	
+	
 
 	/**
 	 * o=alpha*a×b

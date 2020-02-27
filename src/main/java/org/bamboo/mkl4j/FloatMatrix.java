@@ -223,6 +223,34 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	}
 
 	@Override
+	public FloatMatrix maxE(char dim) {
+		if (dim == 'r') {
+			float[] res = new float[rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = get(i, MKL.vsAmax(columns, data, i, rows));
+			return new FloatMatrix(1, rows, res);
+		}
+		float[] res = new float[columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = get(MKL.vsAmax(rows, data, i * rows, 1), i);
+		return new FloatMatrix(columns, 1, res);
+	}
+
+	@Override
+	public FloatMatrix minE(char dim) {
+		if (dim == 'r') {
+			float[] res = new float[rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = get(i, MKL.vsAmin(columns, data, i, rows));
+			return new FloatMatrix(1, rows, res);
+		}
+		float[] res = new float[columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = get(MKL.vsAmin(rows, data, i * rows, 1), i);
+		return new FloatMatrix(columns, 1, res);
+	}
+
+	@Override
 	public FloatMatrix absmaxE(FloatMatrix b, FloatMatrix o) {
 		if (this.columns != b.columns || this.rows != b.rows)
 			throw new RuntimeException("a and b matrix size must be same");
@@ -247,7 +275,7 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
 		float[] ones = new float[this.rows + this.columns];
 		Arrays.fill(ones, 1.0f);
-		MKL.vsger(this.rows, this.columns, (float)scale, ones, 0, 1, ones, this.rows, 1, o.data, 0, this.rows);
+		MKL.vsger(this.rows, this.columns, (float) scale, ones, 0, 1, ones, this.rows, 1, o.data, 0, this.rows);
 		return o;
 	}
 

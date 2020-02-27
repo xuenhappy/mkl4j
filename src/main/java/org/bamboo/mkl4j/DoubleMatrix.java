@@ -128,6 +128,34 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 	}
 
 	@Override
+	public DoubleMatrix maxE(char dim) {
+		if (dim == 'r') {
+			double[] res = new double[rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = get(i, MKL.vdAmax(columns, data, i, rows));
+			return new DoubleMatrix(1, rows, res);
+		}
+		double[] res = new double[columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = get(MKL.vdAmax(rows, data, i * rows, 1), i);
+		return new DoubleMatrix(columns, 1, res);
+	}
+
+	@Override
+	public DoubleMatrix minE(char dim) {
+		if (dim == 'r') {
+			double[] res = new double[rows];
+			for (int i = 0; i < res.length; i++)
+				res[i] = get(i, MKL.vdAmin(columns, data, i, rows));
+			return new DoubleMatrix(1, rows, res);
+		}
+		double[] res = new double[columns];
+		for (int i = 0; i < res.length; i++)
+			res[i] = get(MKL.vdAmin(rows, data, i * rows, 1), i);
+		return new DoubleMatrix(columns, 1, res);
+	}
+
+	@Override
 	public DoubleMatrix add(DoubleMatrix b, DoubleMatrix o) {
 		if (this.columns != b.columns || this.rows != b.rows)
 			throw new RuntimeException("a and b matrix size must be same");
