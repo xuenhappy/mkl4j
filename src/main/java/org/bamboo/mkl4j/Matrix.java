@@ -91,6 +91,21 @@ public abstract class Matrix<T> {
 	public abstract T sigmoid(T out);
 	
 	/**
+	 * lg(x+1)
+	 * 
+	 * @param val
+	 * @param out
+	 */
+	public abstract T log1p(T out);
+	/**
+	 * log_e use
+	 * 
+	 * @param val
+	 * @param out
+	 */
+	public abstract T ln(T out);
+	
+	/**
 	 * sqrt use
 	 * 
 	 * @param val

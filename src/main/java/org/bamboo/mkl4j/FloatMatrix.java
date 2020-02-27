@@ -128,7 +128,14 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return this.data[i + this.rows * j];
 	}
 	
-	
+	@Override
+	public FloatMatrix ln(FloatMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vsLn(this.data.length, this.data, 0, out.data, 0);
+		return out;
+	}
+
 	
 	@Override
 	public FloatMatrix sqrt(FloatMatrix out) {
@@ -137,6 +144,15 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsSqrt(this.data.length, this.data, 0, out.data, 0);
 		return out;
 	}
+	
+	@Override
+	public FloatMatrix log1p(FloatMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vsLog1p(this.data.length, this.data, 0, out.data, 0);
+		return out;
+	}
+
 
 	/**
 	 * tanh use
@@ -644,6 +660,8 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return m;
 	}
 
+
+	
 	
 
 }
