@@ -90,6 +90,14 @@ public abstract class Matrix<T> {
 	 */
 	public abstract T sigmoid(T out);
 	
+	/**
+	 * sqrt use
+	 * 
+	 * @param val
+	 * @param out
+	 */
+	public abstract T sqrt(T out);
+	
 
 	/**
 	 * tanh use

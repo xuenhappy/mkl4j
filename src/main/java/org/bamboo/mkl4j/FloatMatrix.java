@@ -127,6 +127,16 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	public float get(int i, int j) {
 		return this.data[i + this.rows * j];
 	}
+	
+	
+	
+	@Override
+	public FloatMatrix sqrt(FloatMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vsSqrt(this.data.length, this.data, 0, out.data, 0);
+		return out;
+	}
 
 	/**
 	 * tanh use
@@ -633,5 +643,7 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsRngUniform(m.data.length, m.data, 0, (float) a, (float) b);
 		return m;
 	}
+
+	
 
 }

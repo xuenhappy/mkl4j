@@ -68,6 +68,14 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		System.arraycopy(data, i * this.rows, m.data, 0, this.rows);
 		return m;
 	}
+	
+	@Override
+	public DoubleMatrix sqrt(DoubleMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vdSqrt(this.data.length, this.data, 0, out.data, 0);
+		return out;
+	}
 
 	@Override
 	public DoubleMatrix tanh(DoubleMatrix out) {
@@ -443,5 +451,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		MKL.vdRngUniform(m.data.length, m.data, 0, a, b);
 		return m;
 	}
+
+	
 
 }
