@@ -44,7 +44,7 @@ public class TDense<T extends Matrix<T>> implements NeuralNetwork{
 			this.blas = null;
 		}
 		if (in.readChar() == 'k') {
-			this.activation =(MatrixFunc<T>) Activation.load(in, this.blas.getClass());
+			this.activation =(MatrixFunc<T>) Activation.load(in);
 		} else {
 			this.activation = null;
 		}

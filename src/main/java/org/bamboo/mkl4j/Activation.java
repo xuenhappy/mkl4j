@@ -14,10 +14,8 @@ import java.util.Map;
  */
 public final class Activation {
 
-	/**
-	 * all funcs
-	 */
-	private static final Map<String, MatrixFunc<?>> funcs = new HashMap<String, MatrixFunc<?>>();
+	@SuppressWarnings("rawtypes")
+	private static final Map<String, MatrixFunc> funcs = new HashMap<String, MatrixFunc>();
 
 	/**
 	 * this is a float tanh function
@@ -65,30 +63,36 @@ public final class Activation {
 	};
 
 	/**
-	 * get the activation by name
-	 * 
-	 * @param <T>
-	 * @param cls
-	 * @param name
-	 * @return
+	 * this is a float sigmoid function
 	 */
-	@SuppressWarnings("unchecked")
-	private static final <T extends Matrix<T>> MatrixFunc<T> getAcivation(Class<T> cls, String name) {
+	public static final MatrixFunc<FloatMatrix> F_RELU = new MatrixFunc<FloatMatrix>() {
+		@Override
+		public FloatMatrix call(FloatMatrix input) {
+			return input.relu(input);
+		}
+
+		@Override
+		public String name() {
+			return "F_RELU";
+		}
+	};
+
+	@SuppressWarnings("rawtypes")
+	public static MatrixFunc load(DataInputStream in) throws IOException {
+		String name = in.readUTF();
 		synchronized (funcs) {
 			if (funcs.isEmpty()) {
-
+				funcs.put(F_Tanh.name(), F_Tanh);
+				funcs.put(F_Sigmoid.name(), F_Sigmoid);
+				funcs.put(F_Exp.name(), F_Exp);
+				funcs.put(F_RELU.name(), F_RELU);
 			}
 		}
-		return (MatrixFunc<T>) funcs.get(name);
+		return funcs.get(name);
 	}
 
-	public static <T extends Matrix<T>> MatrixFunc<T> load(DataInputStream in, Class<T> cls) throws IOException {
-		String name = in.readUTF();
-		return getAcivation(cls, name);
-
-	}
-
-	public static <T extends Matrix<T>> void save(DataOutputStream out, MatrixFunc<T> func) throws IOException {
+	@SuppressWarnings("rawtypes")
+	public static void save(DataOutputStream out, MatrixFunc func) throws IOException {
 		out.writeUTF(func.name());
 	}
 
