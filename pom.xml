@@ -7,9 +7,7 @@
 	<artifactId>mkl4j</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
-
 	<name>mkl4j</name>
-	
 	<properties>
 		<main.classname>org.bamboo.nlp.panda.App</main.classname>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,9 +16,6 @@
 		<lucene.version>8.2.0</lucene.version>
 	</properties>
 
-
-
-	
 
 
 
