@@ -172,6 +172,15 @@ public abstract class Matrix<T> {
 	 * @param o
 	 */
 	public abstract T sub(T b, T o);
+	
+	
+	/**
+	 * o
+	 * 
+	 * @param blas
+	 * @return
+	 */
+	public abstract T subRowVector(T blas, T o);
 
 	/**
 	 * o=this*b

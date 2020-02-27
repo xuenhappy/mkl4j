@@ -93,8 +93,6 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		MKL.vdFmax(this.data.length, this.data, 0, zeros, 0, out.data, 0);
 		return out;
 	}
-	
-	
 
 	@Override
 	public DoubleMatrix maxE(DoubleMatrix b, DoubleMatrix o) {
@@ -150,8 +148,9 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 			throw new RuntimeException("out matrix size must eq val size");
 		if (o != this) // copy ori data
 			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
-		for (int i = 0; i < this.rows; i++)// add vector
-			MKL.vdaxpy(this.columns, 1.0f, blas.data, 0, 1, o.data, i, o.rows);
+		double[] ones = new double[this.rows];
+		Arrays.fill(ones, 1.0);
+		MKL.vdger(this.rows, this.columns, 1.0f, ones, 0, 1, blas.data, 0, 1, o.data, 0, this.rows);
 		return o;
 	}
 
@@ -159,8 +158,11 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 	public DoubleMatrix add(double scale, DoubleMatrix o) {
 		if (o.columns != this.columns || o.rows != this.rows)
 			throw new RuntimeException("out matrix size must eq val size");
-		for (int i = 0; i < o.data.length; i++)
-			o.data[i] = this.data[i] + scale;
+		if (o != this) // copy ori data
+			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+		double[] ones = new double[this.rows + this.columns];
+		Arrays.fill(ones, 1.0);
+		MKL.vdger(this.rows, this.columns, scale, ones, 0, 1, ones, this.rows, 1, o.data, 0, this.rows);
 		return o;
 	}
 
@@ -172,6 +174,23 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 			throw new RuntimeException("out matrix size must eq a or b size");
 
 		MKL.vdSub(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+
+	@Override
+	public DoubleMatrix subRowVector(DoubleMatrix blas, DoubleMatrix o) {
+		if (blas.columns != 1 && blas.rows != 1)
+			throw new RuntimeException(" matrix a must be a rank 1 vecctor");
+		int size = Math.max(blas.columns, blas.rows);
+		if (size != this.columns)
+			throw new RuntimeException("matrix row size must eq vector size");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		if (o != this) // copy ori data
+			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+		double[] ones = new double[this.rows];
+		Arrays.fill(ones, 1.0);
+		MKL.vdger(this.rows, this.columns, -1.0, ones, 0, 1, blas.data, 0, 1, o.data, 0, this.rows);
 		return o;
 	}
 

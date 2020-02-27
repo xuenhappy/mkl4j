@@ -194,12 +194,12 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 			throw new RuntimeException("out matrix size must eq val size");
 		if (o != this) // copy ori data
 			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
-		for (int i = 0; i < this.rows; i++)// add vector
-			MKL.vsaxpy(this.columns, 1.0f, blas.data, 0, 1, o.data, i, o.rows);
+		float[] ones = new float[this.rows];
+		Arrays.fill(ones, 1.0f);
+		MKL.vsger(this.rows, this.columns, 1.0f, ones, 0, 1, blas.data, 0, 1, o.data, 0, this.rows);
 		return o;
 	}
-	
-	
+
 	@Override
 	public FloatMatrix maxE(FloatMatrix b, FloatMatrix o) {
 		if (this.columns != b.columns || this.rows != b.rows)
@@ -232,9 +232,6 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsMaxMag(this.data.length, this.data, 0, b.data, 0, o.data, 0);
 		return o;
 	}
-	
-	
-	
 
 	/**
 	 * o=this+scale
@@ -246,8 +243,11 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	public FloatMatrix add(double scale, FloatMatrix o) {
 		if (o.columns != this.columns || o.rows != this.rows)
 			throw new RuntimeException("out matrix size must eq val size");
-		for (int i = 0; i < o.data.length; i++)
-			o.data[i] = this.data[i] + (float) scale;
+		if (o != this) // copy ori data
+			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+		float[] ones = new float[this.rows + this.columns];
+		Arrays.fill(ones, 1.0f);
+		MKL.vsger(this.rows, this.columns, (float)scale, ones, 0, 1, ones, this.rows, 1, o.data, 0, this.rows);
 		return o;
 	}
 
@@ -265,6 +265,28 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 			throw new RuntimeException("out matrix size must eq a or b size");
 
 		MKL.vsSub(this.data.length, this.data, 0, b.data, 0, o.data, 0);
+		return o;
+	}
+
+	/**
+	 * o
+	 * 
+	 * @param blas
+	 * @return
+	 */
+	public FloatMatrix subRowVector(FloatMatrix blas, FloatMatrix o) {
+		if (blas.columns != 1 && blas.rows != 1)
+			throw new RuntimeException(" matrix a must be a rank 1 vecctor");
+		int size = Math.max(blas.columns, blas.rows);
+		if (size != this.columns)
+			throw new RuntimeException("matrix row size must eq vector size");
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		if (o != this) // copy ori data
+			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+		float[] ones = new float[this.rows];
+		Arrays.fill(ones, 1.0f);
+		MKL.vsger(this.rows, this.columns, -1.0f, ones, 0, 1, blas.data, 0, 1, o.data, 0, this.rows);
 		return o;
 	}
 
@@ -575,7 +597,5 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsRngUniform(m.data.length, m.data, 0, (float) a, (float) b);
 		return m;
 	}
-
-	
 
 }
