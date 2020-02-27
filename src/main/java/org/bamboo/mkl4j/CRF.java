@@ -12,23 +12,39 @@ import java.lang.reflect.Array;
  *
  * @param <T>
  */
-public class CRF<T extends Matrix<T>> implements NeuralNetwork {
+public class CRF<T extends Matrix<T>> extends NeuralNetwork {
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static CRF load(DataInputStream in) throws IOException {
+		Matrix m = loadM(in);
+		Matrix t = loadM(in);
+		return new CRF(t, m);
+	}
+
+	public CRF(T trans, T map) {
+		if (trans == null)
+			throw new NullPointerException("trans must be not null");
+		this.trans = trans;
+		this.map = map;
+	}
 
 	/**
 	 * tag trans param
 	 */
-	private T trans;
+	private final T trans;
 	/**
 	 * tag embedding map
 	 */
-	private T map;
+	private final T map;
 
 	/**
 	 * decode the data
 	 */
 	@SuppressWarnings("unchecked")
 	public int[] viterbi_decode(T intput) {
-		T score = intput.mmul(map,false,false,1.0f);
+		T score = intput;
+		if (this.map != null)
+			score = intput.mmul(map, false, false, 1.0f);
 		T[] trellis = (T[]) Array.newInstance(trans.getClass(), score.rows);
 		int[][] backpointers = new int[score.rows][];
 		trellis[0] = score.getRow(0);
@@ -47,15 +63,9 @@ public class CRF<T extends Matrix<T>> implements NeuralNetwork {
 	}
 
 	@Override
-	public void load(DataInputStream in) throws IOException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void save(DataOutputStream out) throws IOException {
-		// TODO Auto-generated method stub
-
+		saveM(out, map);
+		saveM(out, trans);
 	}
 
 }

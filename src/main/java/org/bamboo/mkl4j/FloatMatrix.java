@@ -127,7 +127,7 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 	public float get(int i, int j) {
 		return this.data[i + this.rows * j];
 	}
-	
+
 	@Override
 	public FloatMatrix ln(FloatMatrix out) {
 		if (out.columns != this.columns || this.rows != out.rows)
@@ -136,7 +136,6 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return out;
 	}
 
-	
 	@Override
 	public FloatMatrix sqrt(FloatMatrix out) {
 		if (out.columns != this.columns || this.rows != out.rows)
@@ -144,7 +143,7 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsSqrt(this.data.length, this.data, 0, out.data, 0);
 		return out;
 	}
-	
+
 	@Override
 	public FloatMatrix log1p(FloatMatrix out) {
 		if (out.columns != this.columns || this.rows != out.rows)
@@ -152,7 +151,6 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsLog1p(this.data.length, this.data, 0, out.data, 0);
 		return out;
 	}
-
 
 	/**
 	 * tanh use
@@ -587,8 +585,7 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return get(row, column);
 	}
 
-	@Override
-	public FloatMatrix load(DataInputStream in) throws IOException {
+	public static FloatMatrix load(DataInputStream in) throws IOException {
 		int h = in.readInt();
 		int w = in.readInt();
 		float[] v = new float[w * h];
@@ -659,9 +656,5 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		MKL.vsRngUniform(m.data.length, m.data, 0, (float) a, (float) b);
 		return m;
 	}
-
-
-	
-	
 
 }

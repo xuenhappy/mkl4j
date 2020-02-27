@@ -12,14 +12,45 @@ import java.lang.reflect.Array;
  *
  * @param <T>
  */
-public class TGRU<T extends Matrix<T>> implements NeuralNetwork {
-	private T wIh;
-	private T wHh;
-	private T bIh;
-	private T bHh;
+public class TGRU<T extends Matrix<T>> extends NeuralNetwork {
 
-	private MatrixFunc<T> iactive;
-	private MatrixFunc<T> oactive;
+	/**
+	 * load data
+	 * 
+	 * @param <T>
+	 * @param type
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static TGRU load(DataInputStream in) throws IOException {
+		Matrix wIh = loadM(in);
+		Matrix wHh = loadM(in);
+		Matrix bIh = loadM(in);
+		Matrix bHh = loadM(in);
+		MatrixFunc iactive = loadAF(in);
+		MatrixFunc oactive = loadAF(in);
+		return new TGRU(wIh, wHh, bIh, bHh, iactive, oactive);
+	}
+
+	private final T wIh;
+	private final T wHh;
+	private final T bIh;
+	private final T bHh;
+	private final MatrixFunc<T> iactive;
+	private final MatrixFunc<T> oactive;
+
+	public TGRU(T wIh, T wHh, T bIh, T bHh, MatrixFunc<T> iactive, MatrixFunc<T> oactive) {
+		if (wIh == null || wHh == null || iactive == null || oactive == null)
+			throw new NullPointerException("all args must be not null");
+		this.wIh = wIh;
+		this.wHh = wHh;
+		this.bIh = bIh;
+		this.bHh = bHh;
+		this.iactive = iactive;
+		this.oactive = oactive;
+	}
 
 	/**
 	 * 
@@ -58,19 +89,6 @@ public class TGRU<T extends Matrix<T>> implements NeuralNetwork {
 		T newgate = oactive.call(i_n.add(resetgate.mul(h_n, resetgate), i_n));
 		T hy = newgate.add(inputgate.mul(state.sub(newgate, state), inputgate), newgate);
 		return hy;
-	}
-
-	public TGRU(T wIh, T wHh, T bIh, T bHh, MatrixFunc<T> iactive, MatrixFunc<T> oactive) {
-		this.wHh = wHh.transpose();
-		this.wIh = wIh.transpose();
-		this.bHh = bHh;
-		this.bIh = bIh;
-
-		this.iactive = iactive;
-		this.oactive = oactive;
-	}
-
-	public TGRU() {
 	}
 
 	public int GetStateSize() {
@@ -112,14 +130,14 @@ public class TGRU<T extends Matrix<T>> implements NeuralNetwork {
 	}
 
 	@Override
-	public void load(DataInputStream in) throws IOException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void save(DataOutputStream out) throws IOException {
-		// TODO Auto-generated method stub
+		saveM(out, wIh);
+		saveM(out, wHh);
+		saveM(out, bIh);
+		saveM(out, bHh);
+
+		saveAF(out, iactive);
+		saveAF(out, oactive);
 
 	}
 

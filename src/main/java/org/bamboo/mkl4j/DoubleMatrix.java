@@ -402,8 +402,13 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		return data[row + column * this.rows];
 	}
 
-	@Override
-	public DoubleMatrix load(DataInputStream in) throws IOException {
+	/**
+	 * load a matrix
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
+	public static DoubleMatrix load(DataInputStream in) throws IOException {
 		int h = in.readInt();
 		int w = in.readInt();
 		double[] v = new double[w * h];

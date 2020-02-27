@@ -11,15 +11,32 @@ import java.io.IOException;
  *
  * @param <T>
  */
-public class TDense<T extends Matrix<T>> implements NeuralNetwork{
-	private MatrixFunc<T> activation;
-	private T weight;
-	private T blas;
+public class TDense<T extends Matrix<T>> extends NeuralNetwork {
 
-	public TDense() {
+	/**
+	 * load data
+	 * 
+	 * @param <T>
+	 * @param type
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static TDense load(DataInputStream in) throws IOException {
+		Matrix w = loadM(in);
+		Matrix b = loadM(in);
+		MatrixFunc f = loadAF(in);
+		return new TDense(w, b, f);
 	}
 
+	private final MatrixFunc<T> activation;
+	private final T weight;
+	private final T blas;
+
 	public TDense(T weight, T blas, MatrixFunc<T> activation) {
+		if (weight == null)
+			throw new NullPointerException("weight must be not null");
 		this.activation = activation;
 		this.weight = weight.transpose();
 		this.blas = blas;
@@ -34,38 +51,11 @@ public class TDense<T extends Matrix<T>> implements NeuralNetwork{
 		return val;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void load(DataInputStream in) throws IOException {
-		this.weight = this.weight.load(in);
-		if (in.readChar() == 'c') {
-			this.blas = this.blas.load(in);
-		} else {
-			this.blas = null;
-		}
-		if (in.readChar() == 'k') {
-			this.activation =(MatrixFunc<T>) Activation.load(in);
-		} else {
-			this.activation = null;
-		}
-	}
-
 	@Override
 	public void save(DataOutputStream out) throws IOException {
-		this.weight.save(out);
-		if (this.blas != null) {
-			out.writeChar('c');
-			this.blas.save(out);
-		} else {
-			out.writeChar('n');
-		}
-		if (this.activation != null) {
-			out.writeChar('k');
-			Activation.save(out, activation);
-		} else {
-			out.writeChar('l');
-		}
-
+		saveM(out, weight);
+		saveM(out, blas);
+		saveAF(out, activation);
 	}
 
 }
