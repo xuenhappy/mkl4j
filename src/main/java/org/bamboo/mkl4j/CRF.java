@@ -39,7 +39,7 @@ public class CRF<T extends Matrix<T>> implements NeuralNetwork {
 			trellis[t].add(v.maxE('c'), trellis[t]);
 		}
 		int[] viterbi = new int[score.rows];
-		viterbi[viterbi.length - 1] = trellis[viterbi.length - 1].argMax('c')[0];
+		viterbi[viterbi.length - 1] = trellis[viterbi.length - 1].argMax('r')[0];
 		for (int j = viterbi.length - 2; j >= 0; j--)
 			viterbi[j] = backpointers[j + 1][viterbi[j + 1]];
 		// float viterbi_score=trellis[trellis.length-1].max();
