@@ -13,22 +13,7 @@ import java.io.IOException;
  */
 public class TDense<T extends Matrix<T>> extends NeuralNetwork {
 
-	/**
-	 * load data
-	 * 
-	 * @param <T>
-	 * @param type
-	 * @param in
-	 * @return
-	 * @throws IOException
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static TDense load(DataInputStream in) throws IOException {
-		Matrix w = loadM(in);
-		Matrix b = loadM(in);
-		MatrixFunc f = loadAF(in);
-		return new TDense(w, b, f);
-	}
+	
 
 	private final MatrixFunc<T> activation;
 	private final T weight;
@@ -56,6 +41,22 @@ public class TDense<T extends Matrix<T>> extends NeuralNetwork {
 		saveM(out, weight);
 		saveM(out, blas);
 		saveAF(out, activation);
+	}
+	/**
+	 * load data
+	 * 
+	 * @param <T>
+	 * @param type
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static TDense load(DataInputStream in) throws IOException {
+		Matrix w = loadM(in);
+		Matrix b = loadM(in);
+		MatrixFunc f = loadAF(in);
+		return new TDense(w, b, f);
 	}
 
 }

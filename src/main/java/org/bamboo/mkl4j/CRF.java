@@ -14,20 +14,6 @@ import java.lang.reflect.Array;
  */
 public class CRF<T extends Matrix<T>> extends NeuralNetwork {
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static CRF load(DataInputStream in) throws IOException {
-		Matrix m = loadM(in);
-		Matrix t = loadM(in);
-		return new CRF(t, m);
-	}
-
-	public CRF(T trans, T map) {
-		if (trans == null)
-			throw new NullPointerException("trans must be not null");
-		this.trans = trans;
-		this.map = map;
-	}
-
 	/**
 	 * tag trans param
 	 */
@@ -36,6 +22,13 @@ public class CRF<T extends Matrix<T>> extends NeuralNetwork {
 	 * tag embedding map
 	 */
 	private final T map;
+
+	public CRF(T trans, T map) {
+		if (trans == null)
+			throw new NullPointerException("trans must be not null");
+		this.trans = trans;
+		this.map = map;
+	}
 
 	/**
 	 * decode the data
@@ -66,6 +59,13 @@ public class CRF<T extends Matrix<T>> extends NeuralNetwork {
 	public void save(DataOutputStream out) throws IOException {
 		saveM(out, map);
 		saveM(out, trans);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static CRF load(DataInputStream in) throws IOException {
+		Matrix m = loadM(in);
+		Matrix t = loadM(in);
+		return new CRF(t, m);
 	}
 
 }

@@ -14,26 +14,6 @@ import java.lang.reflect.Array;
  */
 public class TGRU<T extends Matrix<T>> extends NeuralNetwork {
 
-	/**
-	 * load data
-	 * 
-	 * @param <T>
-	 * @param type
-	 * @param in
-	 * @return
-	 * @throws IOException
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static TGRU load(DataInputStream in) throws IOException {
-		Matrix wIh = loadM(in);
-		Matrix wHh = loadM(in);
-		Matrix bIh = loadM(in);
-		Matrix bHh = loadM(in);
-		MatrixFunc iactive = loadAF(in);
-		MatrixFunc oactive = loadAF(in);
-		return new TGRU(wIh, wHh, bIh, bHh, iactive, oactive);
-	}
-
 	private final T wIh;
 	private final T wHh;
 	private final T bIh;
@@ -139,6 +119,27 @@ public class TGRU<T extends Matrix<T>> extends NeuralNetwork {
 		saveAF(out, iactive);
 		saveAF(out, oactive);
 
+	}
+	
+	
+	/**
+	 * load data
+	 * 
+	 * @param <T>
+	 * @param type
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static TGRU load(DataInputStream in) throws IOException {
+		Matrix wIh = loadM(in);
+		Matrix wHh = loadM(in);
+		Matrix bIh = loadM(in);
+		Matrix bHh = loadM(in);
+		MatrixFunc iactive = loadAF(in);
+		MatrixFunc oactive = loadAF(in);
+		return new TGRU(wIh, wHh, bIh, bHh, iactive, oactive);
 	}
 
 }
