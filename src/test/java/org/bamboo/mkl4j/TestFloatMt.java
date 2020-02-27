@@ -41,6 +41,7 @@ public class TestFloatMt {
 		System.out.println("-------------------math op----------------");
 		System.out.println("ori matrix:" + m);
 		System.out.println("tanh result:" + m.tanh(m.numFill(0, true)));
+		System.out.println("sigmoid result:" + m.sigmoid(m.numFill(0, true)));
 		FloatMatrix k=new FloatMatrix(new float[][] { { 2, 5 }, { 6, -8 } });
 		System.out.println(k.relu(k));
 		System.out.println("-------------random gen op---------------");
@@ -49,5 +50,6 @@ public class TestFloatMt {
 		System.out.println("ubiform random:" + m.randomUniformFill(0, 10, true));
 
 	}
+
 
 }

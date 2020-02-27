@@ -365,6 +365,22 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsTanh
 
 /*
  * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdSigmoid
+ * Signature: (I[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdSigmoid
+  (JNIEnv *, jclass, jint, jdoubleArray, jint, jdoubleArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsSigmoid
+ * Signature: (I[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsSigmoid
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jfloatArray, jint);
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
  * Method:    vsLog1p
  * Signature: (I[FI[FI)V
  */

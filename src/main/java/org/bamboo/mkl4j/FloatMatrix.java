@@ -141,6 +141,14 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return out;
 	}
 
+	@Override
+	public FloatMatrix sigmoid(FloatMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vsSigmoid(this.data.length, this.data, 0, out.data, 0);
+		return out;
+	}
+
 	/**
 	 * 
 	 * @param val

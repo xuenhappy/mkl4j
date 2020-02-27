@@ -753,6 +753,55 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsTanh(JNIEnv *env, jclass cls,
 
 /*
  * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vdSigmoid
+ * Signature: (I[DI[DI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vdSigmoid(JNIEnv *env,
+		jclass cls, jint n, jdoubleArray a, jint aOffset, jdoubleArray y,
+		jint yOffset) {
+
+	jdouble *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jdouble *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+	if (jni_y + yOffset != jni_a + aOffset) {	//copy data
+		cblas_dcopy(n, jni_a + aOffset, 1, jni_y + yOffset, 1);
+	}
+	cblas_dscal(n, 0.5, jni_y + yOffset, 1);
+	vdTanh(n, jni_y + yOffset, jni_y + yOffset);
+	cblas_dscal(n, 0.5, jni_y + yOffset, 1);
+	for (int i = 0; i < n; i++) {
+		jdouble *o = jni_y + yOffset + i;
+		*o +=0.5;
+	}
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
+ * Method:    vsSigmoid
+ * Signature: (I[FI[FI)V
+ */
+JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_vsSigmoid(JNIEnv *env,
+		jclass cls, jint n, jfloatArray a, jint aOffset, jfloatArray y,
+		jint yOffset) {
+	jfloat *jni_a = (*env)->GetPrimitiveArrayCritical(env, a, JNI_FALSE);
+	jfloat *jni_y = (*env)->GetPrimitiveArrayCritical(env, y, JNI_FALSE);
+	if (jni_y + yOffset != jni_a + aOffset) {	//copy data
+		cblas_scopy(n, jni_a + aOffset, 1, jni_y + yOffset, 1);
+	}
+	cblas_sscal(n, 0.5, jni_y + yOffset, 1);
+	vsTanh(n, jni_y + yOffset, jni_y + yOffset);
+	cblas_sscal(n, 0.5, jni_y + yOffset, 1);
+	for (int i = 0; i < n; i++) {
+		jfloat *o = jni_y + yOffset + i;
+		*o +=0.5f;
+	}
+	(*env)->ReleasePrimitiveArrayCritical(env, y, jni_y, 0);
+	(*env)->ReleasePrimitiveArrayCritical(env, a, jni_a, 0);
+}
+
+/*
+ * Class:     org_bamboo_mkl4j_MKL
  * Method:    vsLog1p
  * Signature: (I[FI[FI)V
  */

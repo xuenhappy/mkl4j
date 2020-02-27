@@ -81,6 +81,15 @@ public abstract class Matrix<T> {
 	 * @return
 	 */
 	public abstract T getCol(int column);
+	
+	/**
+	 * sigmoid use
+	 * 
+	 * @param val
+	 * @param out
+	 */
+	public abstract T sigmoid(T out);
+	
 
 	/**
 	 * tanh use

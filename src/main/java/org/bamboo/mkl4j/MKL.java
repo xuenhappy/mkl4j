@@ -505,6 +505,10 @@ public class MKL {
 	public native static void vdTanh(int n, double[] a, int aOffset, double[] y, int yOffset);
 
 	public native static void vsTanh(int n, float[] a, int aOffset, float[] y, int yOffset);
+	
+	public native static void vdSigmoid(int n, double[] a, int aOffset, double[] y, int yOffset);
+
+	public native static void vsSigmoid(int n, float[] a, int aOffset, float[] y, int yOffset);
 
 	public native static void vsLog1p(int n, float[] a, int aOffset, float[] y, int yOffset);
 

@@ -55,7 +55,7 @@ public final class Activation {
 	public static final MatrixFunc<FloatMatrix> F_Sigmoid = new MatrixFunc<FloatMatrix>() {
 		@Override
 		public FloatMatrix call(FloatMatrix input) {
-			return input.exp(input.div(2, input)).add(1, input).div(2, input);
+			return input.sigmoid(input);
 		}
 
 		@Override

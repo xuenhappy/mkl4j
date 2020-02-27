@@ -78,6 +78,14 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 	}
 
 	@Override
+	public DoubleMatrix sigmoid(DoubleMatrix out) {
+		if (out.columns != this.columns || this.rows != out.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		MKL.vdSigmoid(this.data.length, this.data, 0, out.data, 0);
+		return out;
+	}
+
+	@Override
 	public DoubleMatrix exp(DoubleMatrix out) {
 		if (out.columns != this.columns || this.rows != out.rows)
 			throw new RuntimeException("out matrix size must eq val size");
