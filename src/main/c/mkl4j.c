@@ -40,7 +40,7 @@ JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_setBlockTime(JNIEnv *env,
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_org_bamboo_mkl4j_MKL_waitPolicy(JNIEnv *env,
-		jclass cls, int mode) {
+		jclass cls, jint mode) {
 	// the new mkl library can't support this method
 	// kmp_set_library(mode);
 }
