@@ -4,22 +4,23 @@
 #nmake /f Makefile
 
 CC = icl.exe
-LD = xilink.exe
 
 JAVA_HOME= C:\Program Files\Java\jdk-12.0.2
-CFLAGS  = /EHsc /LD /I $(JAVA_HOME)\include /I $(JAVA_HOME)\include\win32
-LDFLAGS = /DLL mkl_intel_lp64.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib
+CFLAGS  =/I"$(JAVA_HOME)\include" /I"$(JAVA_HOME)\include\win32"
+LDFLAGS = mkl_intel_lp64.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib 
 
 SOURCES_DIR = ..\..\src\main\c
 OBJECTS_DIR = ..\target\obj
 EXECUTABLE  =  ..\target\libjmkl.dll
 
-SOURCES = $(SOURCES_DIR)
-OBJECTS = $(patsubst $(SOURCES_DIR)\\%.c, $(OBJECTS_DIR)\\%.obj, $(SOURCES))
+SOURCES = $(SOURCES_DIR)\mkl4j.c
+OBJECTS =..\target\obj\mkl4j
 
 all:
 	@if not exist $(OBJECTS_DIR) md $(OBJECTS_DIR)
-	$(CC) $(CFLAGS) -IC:$(SOURCES_DIR) /FoC:$(strip $(OBJECTS)) -c $(SOURCES)
-	$(LD) $(LDFLAGS) /out:$(EXECUTABLE) $(OBJECTS)
+	del /f /s /q "$(EXECUTABLE)" 
+	$(CC)  $(CFLAGS) /I"$(SOURCES_DIR)"  "$(SOURCES)"  /c /nologo /Fo"$(OBJECTS)" 
+	$(CC) /LD  "$(OBJECTS).obj"  /openmp /Qmkl:parallel /link /nologo /dll   $(LDFLAGS) /out:"$(EXECUTABLE)" 
 	del /f /s /q "$(OBJECTS_DIR)\*.*"
 	rd /s /q  "$(OBJECTS_DIR)"
+	del /f /s /q "mkl*"
