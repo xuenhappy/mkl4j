@@ -473,4 +473,58 @@ public class DoubleMatrix extends Matrix<DoubleMatrix> {
 		return m;
 	}
 
+	@Override
+	public DoubleMatrix softmax(char dim, DoubleMatrix o) {
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+		dim=dim=='r'?'c':'r';
+		DoubleMatrix rmax = this.maxE(dim);
+		this.addVector(dim=='r'?'c':'r', -1.0, rmax, o);
+		MKL.vdExp(o.data.length, o.data, 0, o.data, 0);
+		double[] sum = o.sum(dim).data;
+		if (dim == 'r') {
+			for (int i = 0; i < rows; i++)
+				MKL.vdscal(o.columns, 1.0/sum[i], o.data, i, rows);
+		} else {
+			for (int i = 0; i < columns; i++)
+				MKL.vdscal(o.rows, 1.0/sum[i], o.data, i * rows, 1);
+		}
+
+		return o;
+	}
+
+	/**
+	 * o=alpha*blas+this(every vector along dim)
+	 * 
+	 * @param dim
+	 * @param alpha
+	 * @param blas
+	 * @param o
+	 */
+	public DoubleMatrix addVector(char dim, double alpha, DoubleMatrix blas, DoubleMatrix o) {
+		if (blas.columns != 1 && blas.rows != 1)
+			throw new RuntimeException(" matrix a must be a rank 1 vecctor");
+		int size = Math.max(blas.columns, blas.rows);
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		if ('r' == dim) {
+			if (size != this.columns)
+				throw new RuntimeException("matrix column size must eq vector size");
+			if (o != this) // copy ori data
+				System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+			double[] ones = new double[this.rows];
+			Arrays.fill(ones, 1.0f);
+			MKL.vdger(this.rows, this.columns,alpha, ones, 0, 1, blas.data, 0, 1, o.data, 0, this.rows);
+			return o;
+		}
+		if (size != this.rows)
+			throw new RuntimeException("matrix row size must eq vector size");
+		if (o != this) // copy ori data
+			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+		double[] ones = new double[this.columns];
+		Arrays.fill(ones, 1.0f);
+		MKL.vdger(this.rows, this.columns, (float) alpha, blas.data, 0, 1, ones, 0, 1, o.data, 0, this.rows);
+		return o;
+
+	}
 }

@@ -178,6 +178,14 @@ public abstract class Matrix<T> {
 	public abstract T minE(char dim);
 	
 	
+	/**
+	 * the softmax along row or dim
+	 * @param dim
+	 * @return
+	 */
+	public abstract T softmax(char dim,T o);
+	
+	
 	
 	
 	/**

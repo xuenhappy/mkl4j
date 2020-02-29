@@ -14,6 +14,9 @@ public class TestFloatMt {
 		System.out.println("mtraix get col:" + m.getCol(2));
 		System.out.println("-----------------along dim op-------------");
 		System.out.println("ori matrix:" + m);
+		System.out.println("matix along row softmax:" + m.softmax('r', m.numFill(0, true)));
+		System.out.println("matix along col softmax:" + m.softmax('c', m.numFill(0, true)));
+		System.out.println("ori matrix:" + m);
 		System.out.println("matix along row sum:" + m.sum('r'));
 		System.out.println("matix along col sum:" + m.sum('c'));
 		System.out.println("matix along row nrm2:" + m.nrm2('r'));
@@ -48,6 +51,8 @@ public class TestFloatMt {
 		System.out.println("fill number:" + m.numFill(2.0, true));
 		System.out.println("guass random:" + m.randomGaussianFill(6, 2, true));
 		System.out.println("ubiform random:" + m.randomUniformFill(0, 10, true));
+		
+		
 
 	}
 

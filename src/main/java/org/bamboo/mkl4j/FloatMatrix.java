@@ -431,6 +431,61 @@ public class FloatMatrix extends Matrix<FloatMatrix> {
 		return new FloatMatrix(columns, 1, res);
 	}
 
+	@Override
+	public FloatMatrix softmax(char dim, FloatMatrix o) {
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq a or b size");
+		dim=dim=='r'?'c':'r';
+		FloatMatrix rmax = this.maxE(dim);
+		this.addVector(dim=='r'?'c':'r', -1.0, rmax, o);
+		MKL.vsExp(o.data.length, o.data, 0, o.data, 0);
+		float[] sum = o.sum(dim).data;
+		if (dim == 'r') {
+			for (int i = 0; i < rows; i++)
+				MKL.vsscal(o.columns, 1.0f/sum[i], o.data, i, rows);
+		} else {
+			for (int i = 0; i < columns; i++)
+				MKL.vsscal(o.rows, 1.0f/sum[i], o.data, i * rows, 1);
+		}
+
+		return o;
+	}
+
+	/**
+	 * o=alpha*blas+this(every vector along dim)
+	 * 
+	 * @param dim
+	 * @param alpha
+	 * @param blas
+	 * @param o
+	 */
+	public FloatMatrix addVector(char dim, double alpha, FloatMatrix blas, FloatMatrix o) {
+		if (blas.columns != 1 && blas.rows != 1)
+			throw new RuntimeException(" matrix a must be a rank 1 vecctor");
+		int size = Math.max(blas.columns, blas.rows);
+		if (o.columns != this.columns || o.rows != this.rows)
+			throw new RuntimeException("out matrix size must eq val size");
+		if ('r' == dim) {
+			if (size != this.columns)
+				throw new RuntimeException("matrix column size must eq vector size");
+			if (o != this) // copy ori data
+				System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+			float[] ones = new float[this.rows];
+			Arrays.fill(ones, 1.0f);
+			MKL.vsger(this.rows, this.columns, (float) alpha, ones, 0, 1, blas.data, 0, 1, o.data, 0, this.rows);
+			return o;
+		}
+		if (size != this.rows)
+			throw new RuntimeException("matrix row size must eq vector size");
+		if (o != this) // copy ori data
+			System.arraycopy(this.data, 0, o.data, 0, this.data.length);
+		float[] ones = new float[this.columns];
+		Arrays.fill(ones, 1.0f);
+		MKL.vsger(this.rows, this.columns, (float) alpha, blas.data, 0, 1, ones, 0, 1, o.data, 0, this.rows);
+		return o;
+
+	}
+
 	/**
 	 * the max index every row or column
 	 * 
