@@ -19,7 +19,7 @@ OBJECTS =..\target\obj\mkl4j
 all:
 	@if not exist $(OBJECTS_DIR) md $(OBJECTS_DIR)
 	del /f /s /q "$(EXECUTABLE)" 
-	$(CC)  $(CFLAGS) /I"$(SOURCES_DIR)"  "$(SOURCES)"  /c /nologo /Fo"$(OBJECTS)" 
+	$(CC)  $(CFLAGS) /I"$(SOURCES_DIR)"  "$(SOURCES)"  /c /O2 /EHs /MD /nologo /Fo"$(OBJECTS)" 
 	$(CC) /LD  "$(OBJECTS).obj"  /openmp /Qmkl:parallel /link /nologo /dll   $(LDFLAGS) /out:"$(EXECUTABLE)" 
 	del /f /s /q "$(OBJECTS_DIR)\*.*"
 	rd /s /q  "$(OBJECTS_DIR)"
