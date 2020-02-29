@@ -74,6 +74,85 @@ public abstract class NeuralNetwork {
 			return "F_RELU";
 		}
 	};
+	
+	
+	
+	
+	
+	
+
+	/**
+	 * this is a double tanh function
+	 */
+	public static final MatrixFunc<DoubleMatrix> D_Tanh = new MatrixFunc<DoubleMatrix>() {
+		@Override
+		public DoubleMatrix call(DoubleMatrix input) {
+			return input.tanh(input);
+		}
+
+		@Override
+		public String name() {
+			return "D_Tanh";
+		}
+	};
+
+	/**
+	 * this is a double exp function
+	 */
+	public static final MatrixFunc<DoubleMatrix> D_Exp = new MatrixFunc<DoubleMatrix>() {
+		@Override
+		public DoubleMatrix call(DoubleMatrix input) {
+			return input.exp(input);
+		}
+
+		@Override
+		public String name() {
+			return "D_Exp";
+		}
+	};
+
+	/**
+	 * this is a double sigmoid function
+	 */
+	public static final MatrixFunc<DoubleMatrix> D_Sigmoid = new MatrixFunc<DoubleMatrix>() {
+		@Override
+		public DoubleMatrix call(DoubleMatrix input) {
+			return input.sigmoid(input);
+		}
+
+		@Override
+		public String name() {
+			return "D_Sigmoid";
+		}
+	};
+
+	/**
+	 * this is a double sigmoid function
+	 */
+	public static final MatrixFunc<DoubleMatrix> D_RELU = new MatrixFunc<DoubleMatrix>() {
+		@Override
+		public DoubleMatrix call(DoubleMatrix input) {
+			return input.relu(input);
+		}
+
+		@Override
+		public String name() {
+			return "D_RELU";
+		}
+	};
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	private static final Map<String, MatrixFunc> funcs = new HashMap<String, MatrixFunc>();
 
